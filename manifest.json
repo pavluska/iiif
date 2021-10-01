@@ -1,0 +1,902 @@
+{"tiles"=>[{"scaleFactors"=>[1, 2, 4, 8, 16], "width"=>256, "height"=>256}], "protocol"=>"http://iiif.io/api/image", "sizes"=>[{"width"=>167, "height"=>225}, {"width"=>334, "height"=>450}, {"width"=>669, "height"=>901}, {"width"=>1338, "height"=>1803}], "profile"=>["http://iiif.io/api/image/2/level1", {"formats"=>["jpg"], "maxHeight"=>30000, "qualities"=>["native", "color", "gray", "bitonal"], "supports"=>["regionByPct", "regionSquare", "sizeByForcedWh", "sizeByWh", "sizeAboveFull", "sizeUpscaling", "rotationBy90s", "mirroring"], "maxWidth"=>30000}], "width"=>2676, "@id"=>"https://kramerius.mzk.cz/search/iiif/uuid:298d811b-8bd7-4d7e-8622-c4443feb5eb4", "@context"=>"http://iiif.io/api/image/2/context.json", "height"=>3606}
+{"tiles"=>[{"scaleFactors"=>[1, 2, 4, 8, 16], "width"=>256, "height"=>256}], "protocol"=>"http://iiif.io/api/image", "sizes"=>[{"width"=>165, "height"=>224}, {"width"=>331, "height"=>448}, {"width"=>663, "height"=>896}, {"width"=>1326, "height"=>1793}], "profile"=>["http://iiif.io/api/image/2/level1", {"formats"=>["jpg"], "maxHeight"=>30000, "qualities"=>["native", "color", "gray", "bitonal"], "supports"=>["regionByPct", "regionSquare", "sizeByForcedWh", "sizeByWh", "sizeAboveFull", "sizeUpscaling", "rotationBy90s", "mirroring"], "maxWidth"=>30000}], "width"=>2652, "@id"=>"https://kramerius.mzk.cz/search/iiif/uuid:4b53beea-bab7-4da6-bab6-8afd423f1d56", "@context"=>"http://iiif.io/api/image/2/context.json", "height"=>3586}
+{"tiles"=>[{"scaleFactors"=>[1, 2, 4, 8, 16], "width"=>256, "height"=>256}], "protocol"=>"http://iiif.io/api/image", "sizes"=>[{"width"=>166, "height"=>224}, {"width"=>333, "height"=>449}, {"width"=>666, "height"=>899}, {"width"=>1332, "height"=>1799}], "profile"=>["http://iiif.io/api/image/2/level1", {"formats"=>["jpg"], "maxHeight"=>30000, "qualities"=>["native", "color", "gray", "bitonal"], "supports"=>["regionByPct", "regionSquare", "sizeByForcedWh", "sizeByWh", "sizeAboveFull", "sizeUpscaling", "rotationBy90s", "mirroring"], "maxWidth"=>30000}], "width"=>2664, "@id"=>"https://kramerius.mzk.cz/search/iiif/uuid:6b273338-7ac1-4cf4-9c38-9d0e542f030c", "@context"=>"http://iiif.io/api/image/2/context.json", "height"=>3598}
+{"tiles"=>[{"scaleFactors"=>[1, 2, 4, 8, 16], "width"=>256, "height"=>256}], "protocol"=>"http://iiif.io/api/image", "sizes"=>[{"width"=>165, "height"=>224}, {"width"=>331, "height"=>448}, {"width"=>663, "height"=>896}, {"width"=>1326, "height"=>1793}], "profile"=>["http://iiif.io/api/image/2/level1", {"formats"=>["jpg"], "maxHeight"=>30000, "qualities"=>["native", "color", "gray", "bitonal"], "supports"=>["regionByPct", "regionSquare", "sizeByForcedWh", "sizeByWh", "sizeAboveFull", "sizeUpscaling", "rotationBy90s", "mirroring"], "maxWidth"=>30000}], "width"=>2652, "@id"=>"https://kramerius.mzk.cz/search/iiif/uuid:d5aa18ac-eaf4-4d42-bc25-1a07c5f5925d", "@context"=>"http://iiif.io/api/image/2/context.json", "height"=>3586}
+{"tiles"=>[{"scaleFactors"=>[1, 2, 4, 8, 16], "width"=>256, "height"=>256}], "protocol"=>"http://iiif.io/api/image", "sizes"=>[{"width"=>166, "height"=>224}, {"width"=>332, "height"=>449}, {"width"=>665, "height"=>898}, {"width"=>1330, "height"=>1797}], "profile"=>["http://iiif.io/api/image/2/level1", {"formats"=>["jpg"], "maxHeight"=>30000, "qualities"=>["native", "color", "gray", "bitonal"], "supports"=>["regionByPct", "regionSquare", "sizeByForcedWh", "sizeByWh", "sizeAboveFull", "sizeUpscaling", "rotationBy90s", "mirroring"], "maxWidth"=>30000}], "width"=>2660, "@id"=>"https://kramerius.mzk.cz/search/iiif/uuid:c261454b-c10e-41b7-b5c2-79e4a54da085", "@context"=>"http://iiif.io/api/image/2/context.json", "height"=>3594}
+{"tiles"=>[{"scaleFactors"=>[1, 2, 4, 8, 16], "width"=>256, "height"=>256}], "protocol"=>"http://iiif.io/api/image", "sizes"=>[{"width"=>165, "height"=>224}, {"width"=>331, "height"=>448}, {"width"=>662, "height"=>897}, {"width"=>1324, "height"=>1795}], "profile"=>["http://iiif.io/api/image/2/level1", {"formats"=>["jpg"], "maxHeight"=>30000, "qualities"=>["native", "color", "gray", "bitonal"], "supports"=>["regionByPct", "regionSquare", "sizeByForcedWh", "sizeByWh", "sizeAboveFull", "sizeUpscaling", "rotationBy90s", "mirroring"], "maxWidth"=>30000}], "width"=>2648, "@id"=>"https://kramerius.mzk.cz/search/iiif/uuid:d4348710-ac8d-4994-be8c-f2f1b21732af", "@context"=>"http://iiif.io/api/image/2/context.json", "height"=>3590}
+{"tiles"=>[{"scaleFactors"=>[1, 2, 4, 8, 16], "width"=>256, "height"=>256}], "protocol"=>"http://iiif.io/api/image", "sizes"=>[{"width"=>166, "height"=>223}, {"width"=>332, "height"=>447}, {"width"=>665, "height"=>895}, {"width"=>1330, "height"=>1791}], "profile"=>["http://iiif.io/api/image/2/level1", {"formats"=>["jpg"], "maxHeight"=>30000, "qualities"=>["native", "color", "gray", "bitonal"], "supports"=>["regionByPct", "regionSquare", "sizeByForcedWh", "sizeByWh", "sizeAboveFull", "sizeUpscaling", "rotationBy90s", "mirroring"], "maxWidth"=>30000}], "width"=>2660, "@id"=>"https://kramerius.mzk.cz/search/iiif/uuid:bb79e7b1-3320-4b8e-8254-babd15d2c1da", "@context"=>"http://iiif.io/api/image/2/context.json", "height"=>3582}
+{"tiles"=>[{"scaleFactors"=>[1, 2, 4, 8, 16], "width"=>256, "height"=>256}], "protocol"=>"http://iiif.io/api/image", "sizes"=>[{"width"=>165, "height"=>224}, {"width"=>331, "height"=>448}, {"width"=>662, "height"=>897}, {"width"=>1324, "height"=>1795}], "profile"=>["http://iiif.io/api/image/2/level1", {"formats"=>["jpg"], "maxHeight"=>30000, "qualities"=>["native", "color", "gray", "bitonal"], "supports"=>["regionByPct", "regionSquare", "sizeByForcedWh", "sizeByWh", "sizeAboveFull", "sizeUpscaling", "rotationBy90s", "mirroring"], "maxWidth"=>30000}], "width"=>2648, "@id"=>"https://kramerius.mzk.cz/search/iiif/uuid:aac77137-dc71-4aa8-8597-e2e1b25a8971", "@context"=>"http://iiif.io/api/image/2/context.json", "height"=>3590}
+{"tiles"=>[{"scaleFactors"=>[1, 2, 4, 8, 16], "width"=>256, "height"=>256}], "protocol"=>"http://iiif.io/api/image", "sizes"=>[{"width"=>166, "height"=>223}, {"width"=>332, "height"=>446}, {"width"=>664, "height"=>893}, {"width"=>1328, "height"=>1787}], "profile"=>["http://iiif.io/api/image/2/level1", {"formats"=>["jpg"], "maxHeight"=>30000, "qualities"=>["native", "color", "gray", "bitonal"], "supports"=>["regionByPct", "regionSquare", "sizeByForcedWh", "sizeByWh", "sizeAboveFull", "sizeUpscaling", "rotationBy90s", "mirroring"], "maxWidth"=>30000}], "width"=>2656, "@id"=>"https://kramerius.mzk.cz/search/iiif/uuid:26f9aa16-5703-4769-9f91-65a36c0a445a", "@context"=>"http://iiif.io/api/image/2/context.json", "height"=>3574}
+{"tiles"=>[{"scaleFactors"=>[1, 2, 4, 8, 16], "width"=>256, "height"=>256}], "protocol"=>"http://iiif.io/api/image", "sizes"=>[{"width"=>164, "height"=>222}, {"width"=>329, "height"=>445}, {"width"=>659, "height"=>890}, {"width"=>1318, "height"=>1781}], "profile"=>["http://iiif.io/api/image/2/level1", {"formats"=>["jpg"], "maxHeight"=>30000, "qualities"=>["native", "color", "gray", "bitonal"], "supports"=>["regionByPct", "regionSquare", "sizeByForcedWh", "sizeByWh", "sizeAboveFull", "sizeUpscaling", "rotationBy90s", "mirroring"], "maxWidth"=>30000}], "width"=>2636, "@id"=>"https://kramerius.mzk.cz/search/iiif/uuid:b2ab40d6-994e-496b-97f6-a51e179e8420", "@context"=>"http://iiif.io/api/image/2/context.json", "height"=>3562}
+{"tiles"=>[{"scaleFactors"=>[1, 2, 4, 8, 16], "width"=>256, "height"=>256}], "protocol"=>"http://iiif.io/api/image", "sizes"=>[{"width"=>164, "height"=>224}, {"width"=>328, "height"=>449}, {"width"=>656, "height"=>898}, {"width"=>1312, "height"=>1797}], "profile"=>["http://iiif.io/api/image/2/level1", {"formats"=>["jpg"], "maxHeight"=>30000, "qualities"=>["native", "color", "gray", "bitonal"], "supports"=>["regionByPct", "regionSquare", "sizeByForcedWh", "sizeByWh", "sizeAboveFull", "sizeUpscaling", "rotationBy90s", "mirroring"], "maxWidth"=>30000}], "width"=>2624, "@id"=>"https://kramerius.mzk.cz/search/iiif/uuid:225182fd-47f9-45a6-aaf4-887a00fa0f77", "@context"=>"http://iiif.io/api/image/2/context.json", "height"=>3594}
+{"tiles"=>[{"scaleFactors"=>[1, 2, 4, 8, 16], "width"=>256, "height"=>256}], "protocol"=>"http://iiif.io/api/image", "sizes"=>[{"width"=>165, "height"=>225}, {"width"=>331, "height"=>450}, {"width"=>662, "height"=>900}, {"width"=>1324, "height"=>1801}], "profile"=>["http://iiif.io/api/image/2/level1", {"formats"=>["jpg"], "maxHeight"=>30000, "qualities"=>["native", "color", "gray", "bitonal"], "supports"=>["regionByPct", "regionSquare", "sizeByForcedWh", "sizeByWh", "sizeAboveFull", "sizeUpscaling", "rotationBy90s", "mirroring"], "maxWidth"=>30000}], "width"=>2648, "@id"=>"https://kramerius.mzk.cz/search/iiif/uuid:ed704720-6967-4e84-a49a-2b6dbadb8acc", "@context"=>"http://iiif.io/api/image/2/context.json", "height"=>3602}
+{"tiles"=>[{"scaleFactors"=>[1, 2, 4, 8, 16], "width"=>256, "height"=>256}], "protocol"=>"http://iiif.io/api/image", "sizes"=>[{"width"=>167, "height"=>225}, {"width"=>334, "height"=>450}, {"width"=>669, "height"=>901}, {"width"=>1338, "height"=>1803}], "profile"=>["http://iiif.io/api/image/2/level1", {"formats"=>["jpg"], "maxHeight"=>30000, "qualities"=>["native", "color", "gray", "bitonal"], "supports"=>["regionByPct", "regionSquare", "sizeByForcedWh", "sizeByWh", "sizeAboveFull", "sizeUpscaling", "rotationBy90s", "mirroring"], "maxWidth"=>30000}], "width"=>2676, "@id"=>"https://kramerius.mzk.cz/search/iiif/uuid:17b08212-3191-4743-b408-9a5b3bd916b7", "@context"=>"http://iiif.io/api/image/2/context.json", "height"=>3606}
+{
+  "@context": "http://iiif.io/api/presentation/3/context.json",
+  "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/manifest.json",
+  "type": "Manifest",
+  "label": {
+    "cz": [
+      "Variace op 19"
+    ]
+  },
+  "metadata": [
+    {
+      "label": {
+        "cz": [
+          "Název"
+        ]
+      },
+      "value": {
+        "none": [
+          "Variace op 19"
+        ]
+      }
+    },
+    {
+      "label": {
+        "cz": [
+          "Autor"
+        ]
+      },
+      "value": {
+        "none": [
+          [
+            "Bernardi, Franz, 1767-"
+          ]
+        ]
+      }
+    },
+    {
+      "label": {
+        "cz": [
+          "Nakladatelské údaje"
+        ]
+      },
+      "value": {
+        "none": [
+          "[1800?]"
+        ]
+      }
+    }
+  ],
+  "behavior": [
+    "paged"
+  ],
+  "provider": [
+    {
+      "id": "https://registr.digitalniknihovna.cz/libraries/mzk.json",
+      "type": "Agent",
+      "label": {
+        "cz": [
+          "Moravská zemská knihovna v Brně"
+        ]
+      },
+      "homepage": [
+        {
+          "id": "https://kramerius.mzk.cz",
+          "type": "Text",
+          "label": {
+            "cz": [
+              "Moravská zemská knihovna v Brně"
+            ]
+          },
+          "format": "text/html"
+        }
+      ],
+      "logo": [
+        {
+          "id": "https://registr.digitalniknihovna.cz/libraries/mzk/logo",
+          "type": "Image",
+          "format": "image/png"
+        }
+      ]
+    }
+  ],
+  "homepage": [
+    {
+      "id": "http://www.digitalniknihovna.cz/mzk/uuid/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052",
+      "type": "Text",
+      "label": {
+        "cz": [
+          "Odkaz do Digitální knihovny"
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/0",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[1r]"
+        ]
+      },
+      "width": 2676,
+      "height": 3606,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:298d811b-8bd7-4d7e-8622-c4443feb5eb4&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": "",
+          "height": "",
+          "service": [
+            {
+            }
+          ]
+        }
+      ],
+      "seeAlso": [
+        {
+          "id": "",
+          "type": "Alto",
+          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
+          "label": {
+            "none": [
+              "ALTO XML"
+            ]
+          },
+          "format": "text/xml"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/0/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/0/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "",
+                "type": "Image",
+                "width": 2676,
+                "height": 3606,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                  }
+                ]
+              },
+              "target": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/1",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[1v]"
+        ]
+      },
+      "width": 2652,
+      "height": 3586,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:4b53beea-bab7-4da6-bab6-8afd423f1d56&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": "",
+          "height": "",
+          "service": [
+            {
+            }
+          ]
+        }
+      ],
+      "seeAlso": [
+        {
+          "id": "",
+          "type": "Alto",
+          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
+          "label": {
+            "none": [
+              "ALTO XML"
+            ]
+          },
+          "format": "text/xml"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/1/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/1/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "",
+                "type": "Image",
+                "width": 2652,
+                "height": 3586,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                  }
+                ]
+              },
+              "target": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/2",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[2r]"
+        ]
+      },
+      "width": 2664,
+      "height": 3598,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:6b273338-7ac1-4cf4-9c38-9d0e542f030c&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": "",
+          "height": "",
+          "service": [
+            {
+            }
+          ]
+        }
+      ],
+      "seeAlso": [
+        {
+          "id": "",
+          "type": "Alto",
+          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
+          "label": {
+            "none": [
+              "ALTO XML"
+            ]
+          },
+          "format": "text/xml"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/2/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/2/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "",
+                "type": "Image",
+                "width": 2664,
+                "height": 3598,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                  }
+                ]
+              },
+              "target": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/3",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[2v]"
+        ]
+      },
+      "width": 2652,
+      "height": 3586,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:d5aa18ac-eaf4-4d42-bc25-1a07c5f5925d&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": "",
+          "height": "",
+          "service": [
+            {
+            }
+          ]
+        }
+      ],
+      "seeAlso": [
+        {
+          "id": "",
+          "type": "Alto",
+          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
+          "label": {
+            "none": [
+              "ALTO XML"
+            ]
+          },
+          "format": "text/xml"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/3/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/3/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "",
+                "type": "Image",
+                "width": 2652,
+                "height": 3586,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                  }
+                ]
+              },
+              "target": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/4",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[1r]"
+        ]
+      },
+      "width": 2660,
+      "height": 3594,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:c261454b-c10e-41b7-b5c2-79e4a54da085&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": "",
+          "height": "",
+          "service": [
+            {
+            }
+          ]
+        }
+      ],
+      "seeAlso": [
+        {
+          "id": "",
+          "type": "Alto",
+          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
+          "label": {
+            "none": [
+              "ALTO XML"
+            ]
+          },
+          "format": "text/xml"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/4/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/4/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "",
+                "type": "Image",
+                "width": 2660,
+                "height": 3594,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                  }
+                ]
+              },
+              "target": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/5",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[1v]"
+        ]
+      },
+      "width": 2648,
+      "height": 3590,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:d4348710-ac8d-4994-be8c-f2f1b21732af&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": "",
+          "height": "",
+          "service": [
+            {
+            }
+          ]
+        }
+      ],
+      "seeAlso": [
+        {
+          "id": "",
+          "type": "Alto",
+          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
+          "label": {
+            "none": [
+              "ALTO XML"
+            ]
+          },
+          "format": "text/xml"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/5/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/5/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "",
+                "type": "Image",
+                "width": 2648,
+                "height": 3590,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                  }
+                ]
+              },
+              "target": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/6",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[2r]"
+        ]
+      },
+      "width": 2660,
+      "height": 3582,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:bb79e7b1-3320-4b8e-8254-babd15d2c1da&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": "",
+          "height": "",
+          "service": [
+            {
+            }
+          ]
+        }
+      ],
+      "seeAlso": [
+        {
+          "id": "",
+          "type": "Alto",
+          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
+          "label": {
+            "none": [
+              "ALTO XML"
+            ]
+          },
+          "format": "text/xml"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/6/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/6/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "",
+                "type": "Image",
+                "width": 2660,
+                "height": 3582,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                  }
+                ]
+              },
+              "target": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/7",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[2v]"
+        ]
+      },
+      "width": 2648,
+      "height": 3590,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:aac77137-dc71-4aa8-8597-e2e1b25a8971&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": "",
+          "height": "",
+          "service": [
+            {
+            }
+          ]
+        }
+      ],
+      "seeAlso": [
+        {
+          "id": "",
+          "type": "Alto",
+          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
+          "label": {
+            "none": [
+              "ALTO XML"
+            ]
+          },
+          "format": "text/xml"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/7/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/7/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "",
+                "type": "Image",
+                "width": 2648,
+                "height": 3590,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                  }
+                ]
+              },
+              "target": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/8",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[1r]"
+        ]
+      },
+      "width": 2656,
+      "height": 3574,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:26f9aa16-5703-4769-9f91-65a36c0a445a&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": "",
+          "height": "",
+          "service": [
+            {
+            }
+          ]
+        }
+      ],
+      "seeAlso": [
+        {
+          "id": "",
+          "type": "Alto",
+          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
+          "label": {
+            "none": [
+              "ALTO XML"
+            ]
+          },
+          "format": "text/xml"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/8/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/8/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "",
+                "type": "Image",
+                "width": 2656,
+                "height": 3574,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                  }
+                ]
+              },
+              "target": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/9",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[1v]"
+        ]
+      },
+      "width": 2636,
+      "height": 3562,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:b2ab40d6-994e-496b-97f6-a51e179e8420&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": "",
+          "height": "",
+          "service": [
+            {
+            }
+          ]
+        }
+      ],
+      "seeAlso": [
+        {
+          "id": "",
+          "type": "Alto",
+          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
+          "label": {
+            "none": [
+              "ALTO XML"
+            ]
+          },
+          "format": "text/xml"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/9/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/9/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "",
+                "type": "Image",
+                "width": 2636,
+                "height": 3562,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                  }
+                ]
+              },
+              "target": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/9"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/10",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[1r]"
+        ]
+      },
+      "width": 2624,
+      "height": 3594,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:225182fd-47f9-45a6-aaf4-887a00fa0f77&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": "",
+          "height": "",
+          "service": [
+            {
+            }
+          ]
+        }
+      ],
+      "seeAlso": [
+        {
+          "id": "",
+          "type": "Alto",
+          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
+          "label": {
+            "none": [
+              "ALTO XML"
+            ]
+          },
+          "format": "text/xml"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/10/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/10/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "",
+                "type": "Image",
+                "width": 2624,
+                "height": 3594,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                  }
+                ]
+              },
+              "target": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/11",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[1v]"
+        ]
+      },
+      "width": 2648,
+      "height": 3602,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:ed704720-6967-4e84-a49a-2b6dbadb8acc&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": "",
+          "height": "",
+          "service": [
+            {
+            }
+          ]
+        }
+      ],
+      "seeAlso": [
+        {
+          "id": "",
+          "type": "Alto",
+          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
+          "label": {
+            "none": [
+              "ALTO XML"
+            ]
+          },
+          "format": "text/xml"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/11/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/11/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "",
+                "type": "Image",
+                "width": 2648,
+                "height": 3602,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                  }
+                ]
+              },
+              "target": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/11"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/12",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[1]"
+        ]
+      },
+      "width": 2676,
+      "height": 3606,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:17b08212-3191-4743-b408-9a5b3bd916b7&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": "",
+          "height": "",
+          "service": [
+            {
+            }
+          ]
+        }
+      ],
+      "seeAlso": [
+        {
+          "id": "",
+          "type": "Alto",
+          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
+          "label": {
+            "none": [
+              "ALTO XML"
+            ]
+          },
+          "format": "text/xml"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/12/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/12/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "",
+                "type": "Image",
+                "width": 2676,
+                "height": 3606,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                  }
+                ]
+              },
+              "target": "https://iiif.pavlarychtarova.cz/iiif/monograph/uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052/canvases/12"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
