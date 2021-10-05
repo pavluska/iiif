@@ -2,6 +2,7 @@ require 'net/https'
 require 'open-uri'
 require 'nokogiri'
 require 'json'
+require 'typhoeus'
 
 # http://www.digitalniknihovna.cz/mzk/uuid/uuid:f4561864-6a82-49c6-b530-4ca0ba9df0d4
 # https://kramerius.mzk.cz/search/iiif/uuid:c0acb191-92a3-4d68-83e1-d614acf2acab/info.json
@@ -9,8 +10,8 @@ require 'json'
 @registrkrameriu = "https://registr.digitalniknihovna.cz/libraries.json"
 
 @url_manifest = "https://iiif.pavlarychtarova.cz/iiif/monograph"
-@uuid = "uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052"
-# @uuid = "uuid:f4561864-6a82-49c6-b530-4ca0ba9df0d4"
+# @uuid = "uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052"
+@uuid = "uuid:f4561864-6a82-49c6-b530-4ca0ba9df0d4"
 # @uuid = "uuid:37340ee7-621b-479d-9fd1-26ed0f2d1bdf"
 # @uuid = "uuid:9743c10f-9e10-11e0-a742-0050569d679d"
 # @uuid = "uuid:c82abdac-2d07-11e0-b59b-0050569d679d"
@@ -38,6 +39,7 @@ def get_xml(url)
 end
 
 def get_json(url)
+    t = Time.now
     uri = URI(URI.escape(url))
     https = Net::HTTP.new(uri.host, uri.port)
     https.use_ssl = true
@@ -46,7 +48,11 @@ def get_json(url)
     # request.add_field "Accept-Language", "cs"
     request.add_field "Accept", "application/json"
     response = https.request(request)
-    JSON.parse(response.read_body)
+    puts (Time.now - t).to_s
+
+    result =  JSON.parse(response.read_body)
+    puts (Time.now - t).to_s
+    return result
 end
 
 def mods_extractor
@@ -249,65 +255,120 @@ def create_behavior
     return behavior
 end
 
-def create_items
-    itemsCanvas = []
+def create_list_of_pages
     uuid = "#{@uuid}".to_json
 
+    # nactu a seradim si stranky    
     object = get_json("https://kramerius.mzk.cz/search/api/v5.0/search?fl=PID,details,rels_ext_index&q=parent_pid:#{uuid} AND fedora.model:page&rows=1500&start=0")
     response_body = object["response"]["docs"]
     sorted_object = response_body.sort { |a, b| a["rels_ext_index"] <=> b["rels_ext_index"]}
     # puts JSON.pretty_generate(sorted_object)
+
+    pids = []
+    pages = []
     
+    # pro kazdou stranku:
     sorted_object.each do |page|
-        # toto si musim natahat ci vygenerovat pro kazdou stranku:
+        puts "sorted object - start" + Time.now.to_s
+        page_properties = {}
         index = page["rels_ext_index"][0]
         uuid_page = page["PID"]
-        
-        image_object = get_json("https://kramerius.mzk.cz/search/iiif/#{uuid_page}/info.json")
-        puts image_object
-        # puts image_object["height"]
-        
-        # vyska a sirka obrazku
-        # width = ""
-        # height = ""
-        width = image_object["width"]
-        height = image_object["height"]
-        thumb_width = ""
-        thumb_height = ""
+        pids.push(uuid_page)
+        page_properties["index"] = index
+        page_properties["pid"] = uuid_page
 
         # id pro vsechny urovne
-        canvas_id = "#{@url_manifest}/#{@uuid}/canvases/#{index}"
-        annotationPage_id = "#{@url_manifest}/#{@uuid}/canvases/#{index}/ap"
-        annotation_id = "#{@url_manifest}/#{@uuid}/canvases/#{index}/ap/a"
-        body_id = ""
-        alto_id = ""
-        thumb_id = "https://kramerius.mzk.cz/search/img?pid=#{uuid_page}&stream=IMG_THUMB&action=GETRAW"
-        
+        page_properties["canvas_id"] = "#{@url_manifest}/#{@uuid}/canvases/#{index}"
+        page_properties["annotationPage_id"] = "#{@url_manifest}/#{@uuid}/canvases/#{index}/ap"
+        page_properties["annotation_id"] = "#{@url_manifest}/#{@uuid}/canvases/#{index}/ap/a"
+        page_properties["body_id"] = ""
+        page_properties["alto_id"] = ""
+        page_properties["thumb_id"] = "https://kramerius.mzk.cz/search/img?pid=#{uuid_page}&stream=IMG_THUMB&action=GETRAW"
+
         # cislo strany
         canvas_label = ""
         if !page["details"][0].split("##")[0].nil?
-            canvas_label = page["details"][0].split("##")[0].strip.sub(" ", "")
+            page_properties["page_number"] = page["details"][0].split("##")[0].strip.sub(" ", "")
         end
         
         # typ strany
         page_type = ""
         if !page["details"][0].split("##")[1].nil?
-            page_type = page["details"][0].split("##")[1].strip.sub(" ", "")
+            page_properties["page_type"] = page["details"][0].split("##")[1].strip.sub(" ", "")
         end
+        pages.push(page_properties)
+        puts "sorted object -  end" + Time.now.to_s
+    end
 
-    
-        # a ted z toho vyrobim items
-        
+    # typhoeus test
+    hydra = Typhoeus::Hydra.new
+    requests = pids.map{ |pid|
+        puts "hydra" + Time.now.to_s
+        request = Typhoeus::Request.new( 
+        "https://kramerius.mzk.cz/search/iiif/#{pid}/info.json",
+        method: :get,
+        headers: {
+            "Content-Type" => "application/json"
+        },
+        followlocation: true
+        )
+        hydra.queue(request)
+        request
+    }
+    hydra.run
+    responses = requests.map { |request|
+        puts "hydra - end " + Time.now.to_s
+        JSON(request.response.body) if request.response.code === 200
+    }
+
+    pages.each do |page|
+        puts "kombinace" + Time.now.to_s
+        pid2 = "https://kramerius.mzk.cz/search/iiif/#{page["pid"]}"
+        responses.each do |item|
+            if !item["@id"].nil?
+                if pid2 === item["@id"]
+                    width = item["width"]
+                    height = item["height"]
+                    thumb_width = item["sizes"][0]["width"]
+                    thumb_height = item["sizes"][0]["height"]
+                    page["width"] = width
+                    page["height"] = height
+                    page["thumb_width"] = thumb_width
+                    page["thumb_height"] = thumb_height
+                end
+            end
+        end
+    end
+    return pages
+end
+    #     # nacist velikost obrazku z IIIF info.json
+    #     # puts Time.now.to_s
+    #     # puts "https://kramerius.mzk.cz/search/iiif/#{uuid_page}/info.json"
+    #     # image_object = get_json("https://kramerius.mzk.cz/search/iiif/#{uuid_page}/info.json")
+    #     # next
+    #     # width = image_object["width"]
+    #     # height = image_object["height"]
+
+    #     # nacist velikost obrazku ze ZOOMIFY
+    #     image_object = Nokogiri::XML get_xml("https://kramerius.mzk.cz/search/zoomify/#{uuid_page}/ImageProperties.xml")
+    #     width = image_object.xpath("IMAGE_PROPERTIES/@WIDTH")
+    #     height = image_object.xpath("IMAGE_PROPERTIES/@HEIGHT")
+
+def create_items
+    itemsCanvas = []
+    pages = create_list_of_pages
+
+    pages.each do |page|
         itemsAnnotationPage = []
         itemsAnnotation = []
-        seeAlso = {"id" => alto_id, "type" => "Alto", "profile" => "http://www.loc.gov/standards/alto/v3/alto.xsd", "label" => { "none" => ["ALTO XML"] }, "format" => "text/xml"}
+        seeAlso = {"id" => page["alto_id"], "type" => "Alto", "profile" => "http://www.loc.gov/standards/alto/v3/alto.xsd", "label" => { "none" => ["ALTO XML"] }, "format" => "text/xml"}
         body_service = {}
         thumb_service = {}
-        canvas_thumbnail = {"id" => thumb_id, "type" => "Image", "width" => thumb_width, "height" => thumb_height, "service" => [thumb_service]}
-        body = {"id" => body_id, "type" => "Image", "width" => width, "height" => height, "format" => "image/jpeg", "service" => [body_service]}
-        annotation = {"id" => annotation_id, "type" => "Annotation", "motivation" => "painting", "body" => body, "target" => canvas_id}
-        annotationPage = {"id" => annotationPage_id, "type" => "AnnotationPage", "items" => itemsAnnotation}
-        canvas = {"id" => canvas_id, "type" => "Canvas", "label" => { "none" => [canvas_label]}, "width" => width, "height" => height, "thumbnail" => [canvas_thumbnail], "seeAlso" => [seeAlso], "items" => itemsAnnotationPage }
+        canvas_thumbnail = {"id" => page["thumb_id"], "type" => "Image", "width" => page["thumb_width"], "height" => page["thumb_height"], "service" => [thumb_service]}
+        body = {"id" => page["body_id"], "type" => "Image", "width" => page["width"], "height" => page["height"], "format" => "image/jpeg", "service" => [body_service]}
+        annotation = {"id" => page["annotation_id"], "type" => "Annotation", "motivation" => "painting", "body" => body, "target" => page["canvas_id"]}
+        annotationPage = {"id" => page["annotationPage_id"], "type" => "AnnotationPage", "items" => itemsAnnotation}
+        canvas = {"id" => page["canvas_id"], "type" => "Canvas", "label" => { "none" => [page["page_number"]]}, "width" => page["width"], "height" => page["height"], "thumbnail" => [canvas_thumbnail], "seeAlso" => [seeAlso], "items" => itemsAnnotationPage }
         itemsAnnotation.push(annotation)
         itemsAnnotationPage.push(annotationPage)
         itemsCanvas.push(canvas)
@@ -316,6 +377,8 @@ def create_items
 end
 
 def create_iiif
+    puts "------" + Time.now.to_s
+
     iiif = Hash.new(0)
     context = "http://iiif.io/api/presentation/3/context.json"
     id = "#{@url_manifest}/#{@uuid}/manifest.json"
@@ -323,9 +386,14 @@ def create_iiif
     provider = create_provider("BOA001")
     homepage = create_homepage
     iiif = Hash["@context" => context, "id" => id, "type" => type, "label" => create_label, "metadata" => create_metadata, "behavior" => create_behavior, "provider" => provider, "homepage" => homepage, "items" => create_items]
+    puts "------" + Time.now.to_s
+
     return JSON.pretty_generate(iiif)
+
 end
 
 puts create_iiif
 # puts mods_extractor
 # puts create_metadata
+# puts create_items
+# puts create_list_of_pages
