@@ -1,0 +1,140 @@
+{
+  "@context": "http://iiif.io/api/presentation/3/context.json",
+  "id": "https://api.pavlarychtarova.cz/iiif/uuid:e8933b86-fecc-45cc-962c-d22e9271eee4/manifest.json",
+  "type": "Manifest",
+  "label": {
+    "cz": [
+      "Somálsko. Zdravotnictví. Boj proti malárii"
+    ]
+  },
+  "metadata": [
+    {
+      "label": {
+        "cz": [
+          "Název"
+        ]
+      },
+      "value": {
+        "none": [
+          "Somálsko. Zdravotnictví. Boj proti malárii"
+        ]
+      }
+    },
+    {
+      "label": {
+        "cz": [
+          "Nakladatelské údaje"
+        ]
+      },
+      "value": {
+        "none": [
+          "S.l: s.n., [19--?]"
+        ]
+      }
+    }
+  ],
+  "behavior": [
+    "paged"
+  ],
+  "provider": [
+    {
+      "id": "https://registr.digitalniknihovna.cz/libraries/mzk.json",
+      "type": "Agent",
+      "label": {
+        "cz": [
+          "Moravská zemská knihovna v Brně"
+        ]
+      },
+      "homepage": [
+        {
+          "id": "https://kramerius.mzk.cz",
+          "type": "Text",
+          "label": {
+            "cz": [
+              "Moravská zemská knihovna v Brně"
+            ]
+          },
+          "format": "text/html"
+        }
+      ],
+      "logo": [
+        {
+          "id": "https://registr.digitalniknihovna.cz/libraries/mzk/logo",
+          "type": "Image",
+          "format": "image/png"
+        }
+      ]
+    }
+  ],
+  "homepage": [
+    {
+      "id": "http://www.digitalniknihovna.cz/mzk/uuid/uuid:e8933b86-fecc-45cc-962c-d22e9271eee4",
+      "type": "Text",
+      "label": {
+        "cz": [
+          "Odkaz do Digitální knihovny"
+        ]
+      }
+    },
+    {
+      "id": "https://vufind.mzk.cz/Record/MZK01-000658487",
+      "type": "Text",
+      "label": {
+        "cz": [
+          "Odkaz do Vufindu"
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "https://api.pavlarychtarova.cz/iiif/uuid:e8933b86-fecc-45cc-962c-d22e9271eee4/canvases/0",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[1a]"
+        ]
+      },
+      "width": 2309,
+      "height": 2925,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:97ffe6d7-c6e9-495b-8407-817f8859038d&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": 144,
+          "height": 182,
+          "service": [
+            {
+            }
+          ]
+        }
+      ],
+      "items": [
+        {
+          "id": "https://api.pavlarychtarova.cz/iiif/uuid:e8933b86-fecc-45cc-962c-d22e9271eee4/canvases/0/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://api.pavlarychtarova.cz/iiif/uuid:e8933b86-fecc-45cc-962c-d22e9271eee4/canvases/0/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/iiif/uuid:97ffe6d7-c6e9-495b-8407-817f8859038d/full/full/0/default.jpg",
+                "type": "Image",
+                "width": 2309,
+                "height": 2925,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                  }
+                ]
+              },
+              "target": "https://api.pavlarychtarova.cz/iiif/uuid:e8933b86-fecc-45cc-962c-d22e9271eee4/canvases/0"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
