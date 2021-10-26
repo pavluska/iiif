@@ -1,438 +1,243 @@
 {
   "@context": "http://iiif.io/api/presentation/3/context.json",
-  "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/manifest.json",
+  "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/manifest.json",
   "type": "Manifest",
-  "items": [
+  "label": {
+    "cz": [
+      "Klavírní skladby"
+    ]
+  },
+  "metadata": [
     {
-      "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/0",
-      "type": "Canvas",
       "label": {
-        "none": [
-          "[1]"
+        "cz": [
+          "Název"
         ]
       },
-      "width": 2863,
-      "height": 3946,
-      "thumbnail": [
-        {
-          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:79c7a517-79ca-4658-8bcc-809fcb3c5976&stream=IMG_THUMB&action=GETRAW",
-          "type": "Image",
-          "width": 178,
-          "height": 246
-        }
-      ],
-      "seeAlso": [
-        {
-          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:79c7a517-79ca-4658-8bcc-809fcb3c5976/streams/ALTO",
-          "type": "Alto",
-          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
-          "label": {
-            "none": [
-              "ALTO XML"
-            ]
-          },
-          "format": "text/xml"
-        }
-      ],
-      "items": [
-        {
-          "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/0/ap",
-          "type": "AnnotationPage",
-          "items": [
-            {
-              "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/0/ap/a",
-              "type": "Annotation",
-              "motivation": "painting",
-              "body": {
-                "id": "https://kramerius.mzk.cz/search/iiif/uuid:79c7a517-79ca-4658-8bcc-809fcb3c5976/full/full/0/default.jpg",
-                "type": "Image",
-                "width": 2863,
-                "height": 3946,
-                "format": "image/jpeg"
-              },
-              "target": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/0"
-            }
-          ]
-        }
-      ]
+      "value": {
+        "none": [
+          "Klavírní skladby"
+        ]
+      }
     },
     {
-      "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/1",
-      "type": "Canvas",
       "label": {
-        "none": [
-          "[2]"
+        "cz": [
+          "Autor"
         ]
       },
-      "width": 2878,
-      "height": 3970,
-      "thumbnail": [
-        {
-          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:a588ee35-dce3-4abd-a9e0-ba1c9dc4773e&stream=IMG_THUMB&action=GETRAW",
-          "type": "Image",
-          "width": 179,
-          "height": 248
-        }
-      ],
-      "seeAlso": [
-        {
-          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:a588ee35-dce3-4abd-a9e0-ba1c9dc4773e/streams/ALTO",
-          "type": "Alto",
-          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
-          "label": {
-            "none": [
-              "ALTO XML"
-            ]
-          },
-          "format": "text/xml"
-        }
-      ],
-      "items": [
-        {
-          "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/1/ap",
-          "type": "AnnotationPage",
-          "items": [
-            {
-              "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/1/ap/a",
-              "type": "Annotation",
-              "motivation": "painting",
-              "body": {
-                "id": "https://kramerius.mzk.cz/search/iiif/uuid:a588ee35-dce3-4abd-a9e0-ba1c9dc4773e/full/full/0/default.jpg",
-                "type": "Image",
-                "width": 2878,
-                "height": 3970,
-                "format": "image/jpeg"
-              },
-              "target": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/1"
-            }
+      "value": {
+        "none": [
+          [
+            "Chopin, Fryderyk, 1810-1849",
+            "Brailowsky, Alexander, 1896-1976"
           ]
-        }
-      ]
+        ]
+      }
     },
     {
-      "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/2",
-      "type": "Canvas",
       "label": {
-        "none": [
-          "[3]"
+        "cz": [
+          "Nakladatelské údaje"
         ]
       },
-      "width": 2870,
-      "height": 3945,
-      "thumbnail": [
-        {
-          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:97451888-5e7b-4f6d-a789-f25fb8f737c7&stream=IMG_THUMB&action=GETRAW",
-          "type": "Image",
-          "width": 179,
-          "height": 246
-        }
-      ],
-      "seeAlso": [
-        {
-          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:97451888-5e7b-4f6d-a789-f25fb8f737c7/streams/ALTO",
-          "type": "Alto",
-          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
-          "label": {
-            "none": [
-              "ALTO XML"
-            ]
-          },
-          "format": "text/xml"
-        }
-      ],
-      "items": [
-        {
-          "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/2/ap",
-          "type": "AnnotationPage",
-          "items": [
-            {
-              "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/2/ap/a",
-              "type": "Annotation",
-              "motivation": "painting",
-              "body": {
-                "id": "https://kramerius.mzk.cz/search/iiif/uuid:97451888-5e7b-4f6d-a789-f25fb8f737c7/full/full/0/default.jpg",
-                "type": "Image",
-                "width": 2870,
-                "height": 3945,
-                "format": "image/jpeg"
-              },
-              "target": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/2"
-            }
-          ]
-        }
-      ]
-    },
+      "value": {
+        "none": [
+          "Praha: Supraphon, 1968"
+        ]
+      }
+    }
+  ],
+  "provider": [
     {
-      "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/3",
-      "type": "Canvas",
+      "id": "https://registr.digitalniknihovna.cz/libraries/mzk.json",
+      "type": "Agent",
       "label": {
-        "none": [
-          "[4]"
+        "cz": [
+          "Moravská zemská knihovna v Brně"
         ]
       },
-      "width": 2826,
-      "height": 3912,
-      "thumbnail": [
+      "homepage": [
         {
-          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:8dd325ed-6caa-4f37-8835-17c4bb024923&stream=IMG_THUMB&action=GETRAW",
-          "type": "Image",
-          "width": 176,
-          "height": 244
-        }
-      ],
-      "seeAlso": [
-        {
-          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:8dd325ed-6caa-4f37-8835-17c4bb024923/streams/ALTO",
-          "type": "Alto",
-          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
+          "id": "https://kramerius.mzk.cz",
+          "type": "Text",
           "label": {
-            "none": [
-              "ALTO XML"
+            "cz": [
+              "Moravská zemská knihovna v Brně"
             ]
           },
-          "format": "text/xml"
+          "format": "text/html"
         }
       ],
-      "items": [
+      "logo": [
         {
-          "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/3/ap",
-          "type": "AnnotationPage",
-          "items": [
-            {
-              "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/3/ap/a",
-              "type": "Annotation",
-              "motivation": "painting",
-              "body": {
-                "id": "https://kramerius.mzk.cz/search/iiif/uuid:8dd325ed-6caa-4f37-8835-17c4bb024923/full/full/0/default.jpg",
-                "type": "Image",
-                "width": 2826,
-                "height": 3912,
-                "format": "image/jpeg"
-              },
-              "target": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/3"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/4",
-      "type": "Canvas",
-      "label": {
-        "none": [
-          "[5]"
-        ]
-      },
-      "width": 2806,
-      "height": 4001,
-      "thumbnail": [
-        {
-          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:346e1adf-0a68-42d0-b28d-dac0ccdd8736&stream=IMG_THUMB&action=GETRAW",
+          "id": "https://registr.digitalniknihovna.cz/libraries/mzk/logo",
           "type": "Image",
-          "width": 175,
-          "height": 250
-        }
-      ],
-      "seeAlso": [
-        {
-          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:346e1adf-0a68-42d0-b28d-dac0ccdd8736/streams/ALTO",
-          "type": "Alto",
-          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
-          "label": {
-            "none": [
-              "ALTO XML"
-            ]
-          },
-          "format": "text/xml"
-        }
-      ],
-      "items": [
-        {
-          "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/4/ap",
-          "type": "AnnotationPage",
-          "items": [
-            {
-              "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/4/ap/a",
-              "type": "Annotation",
-              "motivation": "painting",
-              "body": {
-                "id": "https://kramerius.mzk.cz/search/iiif/uuid:346e1adf-0a68-42d0-b28d-dac0ccdd8736/full/full/0/default.jpg",
-                "type": "Image",
-                "width": 2806,
-                "height": 4001,
-                "format": "image/jpeg"
-              },
-              "target": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/4"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/5",
-      "type": "Canvas",
-      "label": {
-        "none": [
-          "[6]"
-        ]
-      },
-      "width": 2756,
-      "height": 3967,
-      "thumbnail": [
-        {
-          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:254a5df5-0683-425a-96b7-c00aeff3ba4f&stream=IMG_THUMB&action=GETRAW",
-          "type": "Image",
-          "width": 172,
-          "height": 247
-        }
-      ],
-      "seeAlso": [
-        {
-          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:254a5df5-0683-425a-96b7-c00aeff3ba4f/streams/ALTO",
-          "type": "Alto",
-          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
-          "label": {
-            "none": [
-              "ALTO XML"
-            ]
-          },
-          "format": "text/xml"
-        }
-      ],
-      "items": [
-        {
-          "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/5/ap",
-          "type": "AnnotationPage",
-          "items": [
-            {
-              "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/5/ap/a",
-              "type": "Annotation",
-              "motivation": "painting",
-              "body": {
-                "id": "https://kramerius.mzk.cz/search/iiif/uuid:254a5df5-0683-425a-96b7-c00aeff3ba4f/full/full/0/default.jpg",
-                "type": "Image",
-                "width": 2756,
-                "height": 3967,
-                "format": "image/jpeg"
-              },
-              "target": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/5"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/6",
-      "type": "Canvas",
-      "label": {
-        "none": [
-          "[7]"
-        ]
-      },
-      "width": 2727,
-      "height": 3928,
-      "thumbnail": [
-        {
-          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:b34b650b-718b-4f90-93f7-317e9b6b90cf&stream=IMG_THUMB&action=GETRAW",
-          "type": "Image",
-          "width": 170,
-          "height": 245
-        }
-      ],
-      "seeAlso": [
-        {
-          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:b34b650b-718b-4f90-93f7-317e9b6b90cf/streams/ALTO",
-          "type": "Alto",
-          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
-          "label": {
-            "none": [
-              "ALTO XML"
-            ]
-          },
-          "format": "text/xml"
-        }
-      ],
-      "items": [
-        {
-          "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/6/ap",
-          "type": "AnnotationPage",
-          "items": [
-            {
-              "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/6/ap/a",
-              "type": "Annotation",
-              "motivation": "painting",
-              "body": {
-                "id": "https://kramerius.mzk.cz/search/iiif/uuid:b34b650b-718b-4f90-93f7-317e9b6b90cf/full/full/0/default.jpg",
-                "type": "Image",
-                "width": 2727,
-                "height": 3928,
-                "format": "image/jpeg"
-              },
-              "target": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/6"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/7",
-      "type": "Canvas",
-      "label": {
-        "none": [
-          "[8]"
-        ]
-      },
-      "width": 2820,
-      "height": 3951,
-      "thumbnail": [
-        {
-          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:e3e5a210-4b5f-4f80-9c4b-9dfa8ae4dfe1&stream=IMG_THUMB&action=GETRAW",
-          "type": "Image",
-          "width": 176,
-          "height": 246
-        }
-      ],
-      "seeAlso": [
-        {
-          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:e3e5a210-4b5f-4f80-9c4b-9dfa8ae4dfe1/streams/ALTO",
-          "type": "Alto",
-          "profile": "http://www.loc.gov/standards/alto/v3/alto.xsd",
-          "label": {
-            "none": [
-              "ALTO XML"
-            ]
-          },
-          "format": "text/xml"
-        }
-      ],
-      "items": [
-        {
-          "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/7/ap",
-          "type": "AnnotationPage",
-          "items": [
-            {
-              "id": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/7/ap/a",
-              "type": "Annotation",
-              "motivation": "painting",
-              "body": {
-                "id": "https://kramerius.mzk.cz/search/iiif/uuid:e3e5a210-4b5f-4f80-9c4b-9dfa8ae4dfe1/full/full/0/default.jpg",
-                "type": "Image",
-                "width": 2820,
-                "height": 3951,
-                "format": "image/jpeg"
-              },
-              "target": "https://api.pavlarychtarova.cz/iiif/uuid:71471b30-1bfe-11ea-ac03-5ef3fc9ae867/canvases/7"
-            }
-          ]
+          "format": "image/png"
         }
       ]
     }
   ],
-  "partOf": [
+  "homepage": [
     {
-      "id": "https://api.pavlarychtarova.cz/iiif/uuid:64eb4200-1bed-11ea-b1af-005056827e51/manifest.json",
-      "type": "Collection",
-      "label": ""
+      "id": "http://www.digitalniknihovna.cz/mzk/uuid/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b",
+      "type": "Text",
+      "label": {
+        "cz": [
+          "Odkaz do Digitální knihovny"
+        ]
+      }
+    },
+    {
+      "id": "https://vufind.mzk.cz/Record/MZK01-000292684",
+      "type": "Text",
+      "label": {
+        "cz": [
+          "Odkaz do Vufindu"
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/0",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "Obálka přední"
+        ]
+      },
+      "width": 3270,
+      "height": 3252,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:6710cdfd-8cea-46f1-b745-35be7e9dc374&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": 204,
+          "height": 203
+        }
+      ],
+      "items": [
+        {
+          "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/0/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/0/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/iiif/uuid:6710cdfd-8cea-46f1-b745-35be7e9dc374/full/full/0/default.jpg",
+                "type": "Image",
+                "width": 3270,
+                "height": 3252,
+                "format": "image/jpeg"
+              },
+              "target": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/1",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "Obálka zadní"
+        ]
+      },
+      "width": 3270,
+      "height": 3252,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:4f0ea885-fa2d-4728-965f-ce100da5ea6a&stream=IMG_THUMB&action=GETRAW",
+          "type": "Image",
+          "width": 204,
+          "height": 203
+        }
+      ],
+      "items": [
+        {
+          "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/1/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/1/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/iiif/uuid:4f0ea885-fa2d-4728-965f-ce100da5ea6a/full/full/0/default.jpg",
+                "type": "Image",
+                "width": 3270,
+                "height": 3252,
+                "format": "image/jpeg"
+              },
+              "target": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/2",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "Sonáta č. 3 h moll, op. 58 (I. Allegro maestoso II. Scherzo. Molto Vivace III. Largo IV. Finale. ..."
+        ]
+      },
+      "duration": 1234.0,
+      "items": [
+        {
+          "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/2/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/2/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:a31525ae-4033-4242-9293-d38c1ef06c61/streams/MP3",
+                "type": "Sound",
+                "duration": 1234.0,
+                "format": "audio/mp3"
+              },
+              "target": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/3",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "Fantasie Impromptu cis moll op. 66 - Tarantela As dur, op. 43 - Ukolébavka Des dur (Berceuse), op..."
+        ]
+      },
+      "duration": 1234.0,
+      "items": [
+        {
+          "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/3/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/3/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:b7ee82a6-62ed-4cfe-be80-7387a7b0c7ae/streams/MP3",
+                "type": "Sound",
+                "duration": 1234.0,
+                "format": "audio/mp3"
+              },
+              "target": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/3"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
