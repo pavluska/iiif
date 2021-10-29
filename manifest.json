@@ -1,10 +1,10 @@
 {
-  "@context": "http://iiif.io/api/presentation/3/context.json",
-  "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/manifest.json",
+  "@context": "https://iiif.io/api/presentation/3/context.json",
+  "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4",
   "type": "Manifest",
   "label": {
     "cz": [
-      "Klavírní skladby"
+      "Velehrad 885-1885"
     ]
   },
   "metadata": [
@@ -16,7 +16,19 @@
       },
       "value": {
         "none": [
-          "Klavírní skladby"
+          "Velehrad 885-1885"
+        ]
+      }
+    },
+    {
+      "label": {
+        "cz": [
+          "Typ dokumentu"
+        ]
+      },
+      "value": {
+        "cz": [
+          "Grafika"
         ]
       }
     },
@@ -29,8 +41,8 @@
       "value": {
         "none": [
           [
-            "Chopin, Fryderyk, 1810-1849",
-            "Brailowsky, Alexander, 1896-1976"
+            "Angerer, Karl, 1838-1916",
+            "Göschl, Alexander, 1848-1900"
           ]
         ]
       }
@@ -43,7 +55,27 @@
       },
       "value": {
         "none": [
-          "Praha: Supraphon, 1968"
+          "Wien]: C. Angerer & G., 1885"
+        ]
+      }
+    },
+    {
+      "label": {
+        "cz": [
+          "Jazyk"
+        ]
+      },
+      "value": {
+        "none": [
+          [
+            "latina",
+            "čeština",
+            "němčina",
+            "francouzština",
+            "ruština",
+            "polština",
+            "slovinština"
+          ]
         ]
       }
     }
@@ -80,160 +112,260 @@
   ],
   "homepage": [
     {
-      "id": "http://www.digitalniknihovna.cz/mzk/uuid/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b",
+      "id": "https://www.digitalniknihovna.cz/mzk/uuid/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4",
       "type": "Text",
       "label": {
         "cz": [
           "Odkaz do Digitální knihovny"
         ]
       }
-    },
+    }
+  ],
+  "thumbnail": [
     {
-      "id": "https://vufind.mzk.cz/Record/MZK01-000292684",
-      "type": "Text",
-      "label": {
-        "cz": [
-          "Odkaz do Vufindu"
-        ]
-      }
+      "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/thumb",
+      "type": "Image",
+      "format": "image/jpeg",
+      "service": [
+        {
+          "@id": "https://kramerius.mzk.cz/search/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4",
+          "@type": "ImageService2",
+          "profile": "http://iiif.io/api/image/2/level2.json"
+        }
+      ]
     }
   ],
   "items": [
     {
-      "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/0",
+      "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/0",
       "type": "Canvas",
       "label": {
         "none": [
-          "Obálka přední"
+          "[1a]"
         ]
       },
-      "width": 3270,
-      "height": 3252,
+      "width": 5721,
+      "height": 6849,
       "thumbnail": [
         {
-          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:6710cdfd-8cea-46f1-b745-35be7e9dc374&stream=IMG_THUMB&action=GETRAW",
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:59499f0e-4c90-42c8-add4-ee956c9f8704/thumb",
           "type": "Image",
-          "width": 204,
-          "height": 203
+          "width": 178,
+          "height": 214
         }
       ],
       "items": [
         {
-          "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/0/ap",
+          "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/0/ap",
           "type": "AnnotationPage",
           "items": [
             {
-              "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/0/ap/a",
+              "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/0/ap/a",
               "type": "Annotation",
               "motivation": "painting",
               "body": {
-                "id": "https://kramerius.mzk.cz/search/iiif/uuid:6710cdfd-8cea-46f1-b745-35be7e9dc374/full/full/0/default.jpg",
+                "id": "https://kramerius.mzk.cz/search/iiif/uuid:59499f0e-4c90-42c8-add4-ee956c9f8704/full/full/0/default.jpg",
                 "type": "Image",
-                "width": 3270,
-                "height": 3252,
-                "format": "image/jpeg"
+                "width": 5721,
+                "height": 6849,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "@id": "https://kramerius.mzk.cz/search/iiif/uuid:59499f0e-4c90-42c8-add4-ee956c9f8704",
+                    "@type": "ImageService2",
+                    "profile": "http://iiif.io/api/image/2/level1.json"
+                  }
+                ]
               },
-              "target": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/0"
+              "target": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/0"
             }
           ]
         }
       ]
     },
     {
-      "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/1",
+      "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/1",
       "type": "Canvas",
       "label": {
         "none": [
-          "Obálka zadní"
+          "[1b]"
         ]
       },
-      "width": 3270,
-      "height": 3252,
+      "width": 11040,
+      "height": 6769,
       "thumbnail": [
         {
-          "id": "https://kramerius.mzk.cz/search/img?pid=uuid:4f0ea885-fa2d-4728-965f-ce100da5ea6a&stream=IMG_THUMB&action=GETRAW",
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:d9e6a3ce-b99d-4572-8503-867321c66ddb/thumb",
           "type": "Image",
-          "width": 204,
-          "height": 203
+          "width": 172,
+          "height": 105
         }
       ],
       "items": [
         {
-          "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/1/ap",
+          "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/1/ap",
           "type": "AnnotationPage",
           "items": [
             {
-              "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/1/ap/a",
+              "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/1/ap/a",
               "type": "Annotation",
               "motivation": "painting",
               "body": {
-                "id": "https://kramerius.mzk.cz/search/iiif/uuid:4f0ea885-fa2d-4728-965f-ce100da5ea6a/full/full/0/default.jpg",
+                "id": "https://kramerius.mzk.cz/search/iiif/uuid:d9e6a3ce-b99d-4572-8503-867321c66ddb/full/full/0/default.jpg",
                 "type": "Image",
-                "width": 3270,
-                "height": 3252,
-                "format": "image/jpeg"
+                "width": 11040,
+                "height": 6769,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "@id": "https://kramerius.mzk.cz/search/iiif/uuid:d9e6a3ce-b99d-4572-8503-867321c66ddb",
+                    "@type": "ImageService2",
+                    "profile": "http://iiif.io/api/image/2/level1.json"
+                  }
+                ]
               },
-              "target": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/1"
+              "target": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/1"
             }
           ]
         }
       ]
     },
     {
-      "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/2",
+      "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/2",
       "type": "Canvas",
       "label": {
         "none": [
-          "Sonáta č. 3 h moll, op. 58 (I. Allegro maestoso II. Scherzo. Molto Vivace III. Largo IV. Finale. ..."
+          "[1c]"
         ]
       },
-      "duration": 1234.0,
+      "width": 11040,
+      "height": 6799,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:4fd69d37-f2d2-4b75-9182-5fca2cbd00c6/thumb",
+          "type": "Image",
+          "width": 172,
+          "height": 106
+        }
+      ],
       "items": [
         {
-          "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/2/ap",
+          "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/2/ap",
           "type": "AnnotationPage",
           "items": [
             {
-              "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/2/ap/a",
+              "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/2/ap/a",
               "type": "Annotation",
               "motivation": "painting",
               "body": {
-                "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:a31525ae-4033-4242-9293-d38c1ef06c61/streams/MP3",
-                "type": "Sound",
-                "duration": 1234.0,
-                "format": "audio/mp3"
+                "id": "https://kramerius.mzk.cz/search/iiif/uuid:4fd69d37-f2d2-4b75-9182-5fca2cbd00c6/full/full/0/default.jpg",
+                "type": "Image",
+                "width": 11040,
+                "height": 6799,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "@id": "https://kramerius.mzk.cz/search/iiif/uuid:4fd69d37-f2d2-4b75-9182-5fca2cbd00c6",
+                    "@type": "ImageService2",
+                    "profile": "http://iiif.io/api/image/2/level1.json"
+                  }
+                ]
               },
-              "target": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/2"
+              "target": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/2"
             }
           ]
         }
       ]
     },
     {
-      "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/3",
+      "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/3",
       "type": "Canvas",
       "label": {
         "none": [
-          "Fantasie Impromptu cis moll op. 66 - Tarantela As dur, op. 43 - Ukolébavka Des dur (Berceuse), op..."
+          "[1d]"
         ]
       },
-      "duration": 1234.0,
+      "width": 11040,
+      "height": 6799,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:b890d9fd-e210-4fbb-a6ac-1c948209d034/thumb",
+          "type": "Image",
+          "width": 172,
+          "height": 106
+        }
+      ],
       "items": [
         {
-          "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/3/ap",
+          "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/3/ap",
           "type": "AnnotationPage",
           "items": [
             {
-              "id": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/3/ap/a",
+              "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/3/ap/a",
               "type": "Annotation",
               "motivation": "painting",
               "body": {
-                "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:b7ee82a6-62ed-4cfe-be80-7387a7b0c7ae/streams/MP3",
-                "type": "Sound",
-                "duration": 1234.0,
-                "format": "audio/mp3"
+                "id": "https://kramerius.mzk.cz/search/iiif/uuid:b890d9fd-e210-4fbb-a6ac-1c948209d034/full/full/0/default.jpg",
+                "type": "Image",
+                "width": 11040,
+                "height": 6799,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "@id": "https://kramerius.mzk.cz/search/iiif/uuid:b890d9fd-e210-4fbb-a6ac-1c948209d034",
+                    "@type": "ImageService2",
+                    "profile": "http://iiif.io/api/image/2/level1.json"
+                  }
+                ]
               },
-              "target": "https://api.pavlarychtarova.cz/iiif/uuid:fbf5efba-ff5f-4921-aee6-2d7f4141561b/canvases/3"
+              "target": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/4",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "[1e]"
+        ]
+      },
+      "width": 5611,
+      "height": 6799,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:94858f0b-06f3-498e-9904-f5f9019433e6/thumb",
+          "type": "Image",
+          "width": 175,
+          "height": 212
+        }
+      ],
+      "items": [
+        {
+          "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/4/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/4/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/iiif/uuid:94858f0b-06f3-498e-9904-f5f9019433e6/full/full/0/default.jpg",
+                "type": "Image",
+                "width": 5611,
+                "height": 6799,
+                "format": "image/jpeg",
+                "service": [
+                  {
+                    "@id": "https://kramerius.mzk.cz/search/iiif/uuid:94858f0b-06f3-498e-9904-f5f9019433e6",
+                    "@type": "ImageService2",
+                    "profile": "http://iiif.io/api/image/2/level1.json"
+                  }
+                ]
+              },
+              "target": "https://api.pavlarychtarova.cz/iiif/uuid:12476a6b-cbfb-4097-b027-4af75be4a8e4/canvases/4"
             }
           ]
         }

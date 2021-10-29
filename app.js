@@ -19,7 +19,7 @@ app.use(express.static('public'))
 
 const { spawn } = require('child_process');
 
-app.get("/iiif/:uuid/manifest.json", (req, res, next) => {
+app.get("/iiif/:uuid", (req, res, next) => {
 
     // const uuid = 'uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052';
     const uuid = req.params.uuid;

@@ -9,6 +9,10 @@ require 'typhoeus'
 @registrkrameriu = "https://registr.digitalniknihovna.cz/libraries.json"
 @url_manifest = "https://api.pavlarychtarova.cz/iiif"
 @mods
+@languages = {"cze" => "čeština", "ger" => "němčina", "eng" => "angličtina", "lat" => "latina", "fre" => "francouzština",
+              "rus" => "ruština", "pol" => "polština", "slv" => "slovinština", "slo" => "slovenština", 
+              "ita" => "italština", "dut" => "nizozemština",
+              "und" => "neurčený jazyk", "zxx" => "žádný lingvistický obsah"}
  
 def get_xml(url)
     uri = URI(url) #uri = URI(URI.encode(url))
@@ -51,11 +55,29 @@ def control_404(url)
 end
 
 def find_document_model(pid)
+    document = {}
     uuid = "#{@uuid}".to_json
-    object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,fedora.model&q=PID:#{uuid}&rows=1500&start=0")
+    object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,fedora.model,root_title,details&q=PID:#{uuid}&rows=1500&start=0")
     response_body = object["response"]["docs"]
-    model = response_body.find {|a| a['PID'] == pid}['fedora.model']
-    return model.to_s
+    document["model"] = response_body[0]["fedora.model"]
+    document["root_title"] = response_body[0]["root_title"].split(":")[0]
+    if document["model"].to_s == "periodicalvolume"
+        if !response_body[0]["details"][0].split("##")[0].nil?
+            document["date"] = response_body[0]["details"][0].split("##")[0].strip.sub(" ", "")
+        end
+        if !response_body[0]["details"][0].split("##")[1].nil?
+            document["number"] = response_body[0]["details"][0].split("##")[1].strip.sub(" ", "")
+        end  
+    end
+    if document["model"].to_s == "periodicalitem"
+        if !response_body[0]["details"][0].split("##")[2].nil?
+            document["date"] = response_body[0]["details"][0].split("##")[2].strip.sub(" ", "")
+        end
+        if !response_body[0]["details"][0].split("##")[3].nil?
+            document["number"] = response_body[0]["details"][0].split("##")[3].strip.sub(" ", "")
+        end  
+    end
+    return document
 end
 
 def mods_extractor
@@ -104,6 +126,10 @@ def mods_extractor
             else
                 mods["title"] = title
             end
+        end
+        if !titleInfo.at("subTitle").nil?
+            subtitle = titleInfo.at("subTitle").text
+            mods["subtitle"] = subtitle
         end
         if !titleInfo.at("partNumber").nil?
             partNumber = titleInfo.at("partNumber").text
@@ -160,14 +186,16 @@ def mods_extractor
     end
 
     # nakladatelske udaje
-    published = ""
     xmldoc.xpath("modsCollection/mods/originInfo").each do |originInfo|
-        
+    published = ""    
         # place
         originInfo.xpath("place").each do |place|
-            if place.xpath("placeTerm/@type").to_s == "text"
+            if place.xpath("placeTerm/@authority").to_s != "marccountry"
                 places = place.at("placeTerm").text
                 published = "#{published}#{places}"
+            # else
+            #     places = place.at("placeTerm").text
+            #     published = "#{published}#{places}"
             end
         end
         
@@ -189,6 +217,7 @@ def mods_extractor
                     dates["date_end"] = dat.text
                 else
                     dates["date"] = dat.text
+                    mods["date"] = dat.text
                 end
             end
             if published.length > 0
@@ -199,14 +228,24 @@ def mods_extractor
         end
         mods["published"] = published
     end
+    # jazyk
+    langs = []
+    xmldoc.xpath("modsCollection/mods/language/languageTerm").each do |lang|
+        if !@languages[lang.text].nil?
+            langs.push(@languages[lang.text])
+        else 
+            langs.push(lang.text)
+        end
+        mods["languages"] = langs
+    end
     return mods
 end
 
 def create_label
-    model = find_document_model(@uuid).to_s
     label = {}
-    if model == "periodicalvolume" || model == "periodicalitem"
-        label = {"none" => [@mods["partNumber"]]}
+    if @document_model == "periodicalvolume" || @document_model == "periodicalitem"
+        partDate = @mods["date"]
+        label = {"none" => ["#{@root_title} (#{@document["date"]})"]}
     else label = {"cz" => [@mods["title"]]}
     end
     return label
@@ -218,17 +257,35 @@ def create_metadata
         title = {"label" => {"cz" => ["Název"]}, "value" => {"none" => [@mods["title"]]}}
         metadata.push(title)
     end
-    if !@mods["partNumber"].nil?
-        title = {"label" => {"cz" => ["Číslo části"]}, "value" => {"none" => [@mods["partNumber"]]}}
-        metadata.push(title)
+    if !@mods["subtitle"].nil?
+        subtitle = {"label" => {"cz" => ["Podnázev"]}, "value" => {"none" => [@mods["subtitle"]]}}
+        metadata.push(subtitle)
     end
+    if !@type_of_resource.nil?
+        type_of_resource = {"label" => {"cz" => ["Typ dokumentu"]}, "value" => {"cz" => [@type_of_resource]}}
+        metadata.push(type_of_resource)
+    end
+    # if !@mods["partNumber"].nil?
+    #     title = {"label" => {"cz" => ["Číslo části"]}, "value" => {"none" => [@mods["partNumber"]]}}
+    #     metadata.push(title)
+    # end
     if !@mods["authors"].nil?
         author = {"label" => {"cz" => ["Autor"]}, "value" => {"none" => [@mods["authors"]]}}
         metadata.push(author)
     end
-    if !@mods["published"].nil?
+    if @document_model == "periodicalvolume" || @document_model == "periodicalitem"
+        number = {"label" => {"cz" => ["Číslo části"]}, "value" => {"none" => [@document["number"]]}}
+        date = {"label" => {"cz" => ["Vydáno"]}, "value" => {"none" => [@document["date"]]}}
+        metadata.push(number)
+        metadata.push(date)
+
+    elsif @mods["published"].length > 0
         published = {"label" => {"cz" => ["Nakladatelské údaje"]}, "value" => {"none" => [@mods["published"]]}}
         metadata.push(published)
+    end
+    if !@mods["languages"].nil?
+        subtitle = {"label" => {"cz" => ["Jazyk"]}, "value" => {"none" => [@mods["languages"]]}}
+        metadata.push(subtitle)
     end
     # return JSON.pretty_generate(metadata)
     return metadata
@@ -251,24 +308,21 @@ def create_homepage
     sysno = @mods["sysno"]
     sigla = @mods["sigla"]
     homepage = []
-    # http://www.digitalniknihovna.cz/mzk/uuid/uuid:f4561864-6a82-49c6-b530-4ca0ba9df0d4
     if !uuid.nil?
-        dk = {"id" => "http://www.digitalniknihovna.cz/mzk/uuid/#{uuid}", "type" => "Text", "label" => { "cz" => ["Odkaz do Digitální knihovny"]}}
+        dk = {"id" => "https://www.digitalniknihovna.cz/mzk/uuid/#{uuid}", "type" => "Text", "label" => { "cz" => ["Odkaz do Digitální knihovny"]}}
         homepage.push(dk)
     end
     if !sysno.nil?
         vufind = {"id" => "https://vufind.mzk.cz/Record/#{sigla}-#{sysno}", "type" => "Text", "label" => { "cz" => ["Odkaz do Vufindu"]}}
         homepage.push(vufind)
     end
-        # vufind = "https://vufind.mzk.cz/Record/MZK01-#{sysno}"
-    # homepage = [{"id" => dk, "type" => "Text", "label" => { "cz" => ["Odkaz do Digitální knihovny"]}}, {"id" => vufind, "type" => "Text", "label" => { "cz" => ["Odkaz do Vufindu"]}}]
     return homepage
 end
 def create_homepage_periodical_volume_issue
     uuid = @uuid
     homepage = []
     if !uuid.nil?
-        dk = {"id" => "http://www.digitalniknihovna.cz/mzk/uuid/#{uuid}", "type" => "Text", "label" => { "cz" => ["Odkaz do Digitální knihovny"]}}
+        dk = {"id" => "https://www.digitalniknihovna.cz/mzk/uuid/#{uuid}", "type" => "Text", "label" => { "cz" => ["Odkaz do Digitální knihovny"]}}
         homepage.push(dk)
     end
     return homepage
@@ -277,6 +331,19 @@ end
 def create_behavior
     behavior = ["paged"]
     return behavior
+end
+
+def create_thumbnail
+    # https://kramerius.mzk.cz/search/api/v5.0/item/uuid:bdc28360-3fc8-11e7-b3c8-005056825209/thumb
+    thumbnail = {"id" => "#{@kramerius}/search/api/v5.0/item/#{@uuid}/thumb",
+                 "type" => "Image",
+                 "format" => "image/jpeg",
+                #  "service" => [{"@id" => "#{@kramerius}/search/iiif/#{@uuid}",
+                #                "@type" => "ImageService2",
+                #                "profile" => "http://iiif.io/api/image/2/level2.json"
+                #               }]
+                }
+    return [thumbnail]
 end
 
 def create_list_of_pages
@@ -294,12 +361,9 @@ def create_list_of_pages
     
     # pro kazdou stranku:
     sorted_object.each do |page|
-        # puts "sorted object - start" + Time.now.to_s
         page_properties = {}
-        # index = page["rels_ext_index"][0]
         uuid_page = page["PID"]
         pids.push(uuid_page)
-        # page_properties["index"] = index
         page_properties["pid"] = uuid_page
         index = @canvasIndex
 
@@ -309,7 +373,7 @@ def create_list_of_pages
         page_properties["annotation_id"] = "#{@url_manifest}/#{@uuid}/canvases/#{index}/ap/a"
         page_properties["body_id"] = "#{@kramerius}/search/iiif/#{uuid_page}/full/full/0/default.jpg"
         page_properties["alto_id"] = "#{@kramerius}/search/api/v5.0/item/#{uuid_page}/streams/ALTO"
-        page_properties["thumb_id"] = "#{@kramerius}/search/img?pid=#{uuid_page}&stream=IMG_THUMB&action=GETRAW"
+        page_properties["thumb_id"] = "#{@kramerius}/search/api/v5.0/item/#{uuid_page}/thumb"
 
         # cislo strany
         canvas_label = ""
@@ -354,14 +418,12 @@ def create_list_of_pages
         responses.each do |item|
             if !item["@id"].nil?
                 if pid2 === item["@id"]
-                    width = item["width"]
-                    height = item["height"]
-                    thumb_width = item["sizes"][0]["width"]
-                    thumb_height = item["sizes"][0]["height"]
-                    page["width"] = width
-                    page["height"] = height
-                    page["thumb_width"] = thumb_width
-                    page["thumb_height"] = thumb_height
+                    page["max_width"] = item["width"]
+                    page["max_height"] = item["height"]
+                    page["thumb_width"] = item["sizes"][0]["width"]
+                    page["thumb_height"] = item["sizes"][0]["height"]
+                    page["width"] = item["sizes"][item["sizes"].length - 1]["width"]
+                    page["height"] = item["sizes"][item["sizes"].length - 1]["height"]
                 end
             end
         end
@@ -405,10 +467,15 @@ def create_items_pages
         itemsAnnotation = []
         seeAlso = {"id" => page["alto_id"], 
                 "type" => "Alto", 
-                "profile" => "http://www.loc.gov/standards/alto/v3/alto.xsd", 
+                "profile" => "https://www.loc.gov/standards/alto/v3/alto.xsd", 
                 "label" => { "none" => ["ALTO XML"] }, 
                 "format" => "text/xml"}
-        # TODO body_service = {}
+        body_service = {"@id" => "#{@kramerius}/search/iiif/#{page["pid"]}",
+                        "@type" => "ImageService2",
+                        "profile" => "http://iiif.io/api/image/2/level1.json",
+                        # "width" => "",
+                        # "height" => ""
+                        }
         # TODO thumb_service = {}
         canvas_thumbnail = {"id" => page["thumb_id"], 
                             "type" => "Image", 
@@ -421,7 +488,7 @@ def create_items_pages
                 "width" => page["width"], 
                 "height" => page["height"], 
                 "format" => "image/jpeg", 
-                # TODO "service" => [body_service]
+                "service" => [body_service]
                 }
         annotation = {"id" => page["annotation_id"], 
                       "type" => "Annotation", 
@@ -458,7 +525,7 @@ def create_items_pages
         itemsCanvas.push(canvas)
     end
 
-    if find_document_model(@uuid).to_s == "soundrecording"
+    if @document_model == "soundrecording"
         tracks = create_list_of_mp3
         tracks.each do |track|
             itemsAnnotationPage = []
@@ -484,7 +551,7 @@ def create_items_pages
                 "type" => "Canvas", 
                 "label" => { "none" => [track["title"]]},
                 "duration" => track["duration"],
-                # "thumbnail" => [canvas_thumbnail], 
+                "thumbnail" => [canvas_thumbnail], 
                 # "seeAlso" => [seeAlso], 
                 "items" => itemsAnnotationPage
             }
@@ -510,7 +577,7 @@ def part_of
             object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,title,root_title,fedora.model&rows=1500&start=0&q=PID:#{uuid}")
             response_body = object["response"]["docs"][0]
             if response_body["fedora.model"] == "periodical" || response_body["fedora.model"] == "periodicalvolume"
-                item["id"] = "#{@url_manifest}/#{pid}/manifest.json"
+                item["id"] = "#{@url_manifest}/#{pid}"
                 item["type"] = "Collection"
                 item["label"] = response_body["root_title"]
             end
@@ -519,7 +586,7 @@ def part_of
         # VYPRDNOUT SE NA KOLEKCE VE VERZI 5
         # a["collection"].each do |vc|
         #     item = {}
-        #     item["id"] = "#{@url_manifest}/#{vc}/manifest.json"
+        #     item["id"] = "#{@url_manifest}/#{vc}"
         #     item["type"] = "Collection"
         #     # ZISKAT NAZEV KOLEKCE - HROZNE TO TRVA
         #     # object = get_json("https://kramerius.mzk.cz/search/api/v5.0/vc")
@@ -536,28 +603,56 @@ end
 
 # ---------- MONOGRAFIE -----------
 def create_iiif_monograph
-    context = "http://iiif.io/api/presentation/3/context.json"
-    id = "#{@url_manifest}/#{@uuid}/manifest.json"
-    type = "Manifest"
-    provider = create_provider("BOA001")
-    homepage = create_homepage
-
-    iiif = {"@context" => context, 
-                "id" => id, 
-                "type" => type, 
+    iiif = {"@context" => "https://iiif.io/api/presentation/3/context.json", 
+                "id" => "#{@url_manifest}/#{@uuid}", 
+                "type" => "Manifest", 
                 "label" => create_label, 
                 "metadata" => create_metadata, 
                 # "behavior" => create_behavior, 
-                "provider" => provider, 
-                "homepage" => homepage, 
+                "provider" => create_provider("BOA001"), 
+                "homepage" => create_homepage,
+                "thumbnail" => create_thumbnail,
                 "items" => create_items_pages
             }
     return JSON.pretty_generate(iiif)
 end
 # ---------- KONEC MONOGRAFIE -----------
 
-
 # ---------- CISLO PERIODIKA -----------
+
+def create_iiif_periodicalissue
+    iiif = {"@context" => "https://iiif.io/api/presentation/3/context.json", 
+                "id" => "#{@url_manifest}/#{@uuid}", 
+                "type" => "Manifest", 
+                "label" => create_label, 
+                "metadata" => create_metadata, 
+                "provider" => create_provider("BOA001"), 
+                "homepage" => create_homepage_periodical_volume_issue,
+                "thumbnail" => create_thumbnail,
+                "items" => create_items_pages,
+                "partOf" => part_of
+            }
+    return JSON.pretty_generate(iiif)
+end
+# ---------- KONEC CISLO PERIODIKA -----------
+
+# ---------- ROCNIK PERIODIKA -----------
+
+def create_iiif_periodicalvolume
+    iiif = {"@context" => "https://iiif.io/api/presentation/3/context.json", 
+                "id" => "#{@url_manifest}/#{@uuid}", 
+                "type" => "Collection", 
+                "label" => create_label, 
+                "metadata" => create_metadata, 
+                "provider" => create_provider("BOA001"), 
+                "homepage" => create_homepage_periodical_volume_issue,
+                "thumbnail" => create_thumbnail,
+                "items" => create_items_periodical_issues,
+                "partOf" => part_of
+            }
+    return JSON.pretty_generate(iiif)
+end
+
 def create_list_of_periodical_issues
     uuid = "#{@uuid}".to_json
 
@@ -570,11 +665,8 @@ def create_list_of_periodical_issues
 
     sorted_object.each do |issue|
         issue_properties = {}
-        index = issue["rels_ext_index"][0]
-        uuid_issue = issue["PID"]
-        issue_properties["index"] = index
-        issue_properties["pid"] = uuid_issue
-        
+        issue_properties["index"] = issue["rels_ext_index"][0]
+        issue_properties["pid"] = issue["PID"]    
         # datum vydani cisla
         issue_date = ""
         if !issue["details"][0].split("##")[0].nil?
@@ -595,37 +687,31 @@ def create_items_periodical_issues
     issues = create_list_of_periodical_issues
 
     issues.each do |issue|
-        item = {"id" => "#{@url_manifest}/#{issue["pid"]}/manifest.json",
+        item = {"id" => "#{@url_manifest}/#{issue["pid"]}",
                 "type" => "Manifest",
-                "label" => issue["issue_date"]
+                "label" => "#{@root_title} (#{issue["issue_date"]})"
                }
         itemsIssues.push(item)
     end
     return itemsIssues
 end
 
-def create_iiif_periodicalissue
-    context = "http://iiif.io/api/presentation/3/context.json"
-    id = "#{@url_manifest}/#{@uuid}/manifest.json"
-    type = "Manifest"
-    provider = create_provider("BOA001")
-    homepage = create_homepage_periodical_volume_issue
-    iiif = {"@context" => context, 
-                "id" => id, 
-                "type" => type, 
+# ---------- KONEC ROCNIK PERIODIKA -----------
+
+# ---------- TITUL PERIODIKA -----------
+def create_iiif_periodical
+    iiif = {"@context" => "https://iiif.io/api/presentation/3/context.json",
+                "id" => "#{@url_manifest}/#{@uuid}", 
+                "type" => "Collection", 
                 "label" => create_label, 
                 "metadata" => create_metadata, 
-                "provider" => provider, 
-                "homepage" => homepage, 
-                "items" => create_items_pages,
-                "partOf" => part_of
+                "provider" => create_provider("BOA001"), 
+                "homepage" => create_homepage,
+                "thumbnail" => create_thumbnail,
+                "items" => create_items_periodical_volumes
             }
     return JSON.pretty_generate(iiif)
 end
-# ---------- KONEC CISLO PERIODIKA -----------
-
-
-# ---------- ROCNIK PERIODIKA -----------
 def create_list_of_periodical_volumes
     uuid = "#{@uuid}".to_json
 
@@ -661,9 +747,8 @@ end
 def create_items_periodical_volumes
     itemsVolumes = []
     volumes = create_list_of_periodical_volumes
-
     volumes.each do |volume|
-        item = {"id" => "#{@url_manifest}/#{volume["pid"]}/manifest.json",
+        item = {"id" => "#{@url_manifest}/#{volume["pid"]}",
                 "type" => "Collection",
                 "label" => volume["volume_date"]
                }
@@ -671,73 +756,48 @@ def create_items_periodical_volumes
     end
     return itemsVolumes
 end
-
-def create_iiif_periodicalvolume
-    context = "http://iiif.io/api/presentation/3/context.json"
-    id = "#{@url_manifest}/#{@uuid}/manifest.json"
-    type = "Collection"
-    provider = create_provider("BOA001")
-    homepage = create_homepage_periodical_volume_issue
-    iiif = {"@context" => context, 
-                "id" => id, 
-                "type" => type, 
-                "label" => create_label, 
-                "metadata" => create_metadata, 
-                "provider" => provider, 
-                "homepage" => homepage, 
-                "items" => create_items_periodical_issues,
-                "partOf" => part_of
-            }
-    return JSON.pretty_generate(iiif)
-end
-# ---------- KONEC ROCNIK PERIODIKA -----------
-
-
-# ---------- TITUL PERIODIKA -----------
-def create_iiif_periodical
-    context = "http://iiif.io/api/presentation/3/context.json"
-    id = "#{@url_manifest}/#{@uuid}/manifest.json"
-    type = "Collection"
-    provider = create_provider("BOA001")
-    homepage = create_homepage
-    iiif = {"@context" => context,
-                "id" => id, 
-                "type" => type, 
-                "label" => create_label, 
-                "metadata" => create_metadata, 
-                "provider" => provider, 
-                "homepage" => homepage, 
-                "items" => create_items_periodical_volumes
-            }
-    return JSON.pretty_generate(iiif)
-end
 # ---------- KONEC TITUL PERIODIKA -----------
+
 
 def create_iiif
     @mods = mods_extractor
-    if find_document_model(@uuid).to_s == "monograph"
+    @document = find_document_model(@uuid)
+    @document_model = @document["model"]
+    @root_title = @document["root_title"]
+    if @document_model == "monograph"
+        @type_of_resource = "Monografie"
         puts create_iiif_monograph
-    elsif find_document_model(@uuid).to_s == "map"
+    elsif @document_model == "map"
+        @type_of_resource = "Mapa"
         puts create_iiif_monograph
-    elsif find_document_model(@uuid).to_s == "graphic"
+    elsif @document_model == "graphic"
+        @type_of_resource = "Grafika"
         puts create_iiif_monograph
-    elsif find_document_model(@uuid).to_s == "sheetmusic"
+    elsif @document_model == "sheetmusic"
+        @type_of_resource = "Hudebnina"
         puts create_iiif_monograph
-    elsif find_document_model(@uuid).to_s == "archive"
+    elsif @document_model == "archive"
+        @type_of_resource = "Archiválie"
         puts create_iiif_monograph
-    elsif find_document_model(@uuid).to_s == "manuscript"
+    elsif @document_model == "manuscript"
+        @type_of_resource = "Rukopis"
         puts create_iiif_monograph
-    elsif find_document_model(@uuid).to_s == "soundrecording"
+    elsif @document_model == "soundrecording"
+        @type_of_resource = "Zvuková nahrávka"
         puts create_iiif_monograph
-    elsif find_document_model(@uuid).to_s == "periodical"
+    elsif @document_model == "periodical"
+        @type_of_resource = "Periodikum"
         puts create_iiif_periodical
-    elsif find_document_model(@uuid).to_s == "periodicalvolume"
+    elsif @document_model == "periodicalvolume"
+        @type_of_resource = "Ročník periodika"
         puts create_iiif_periodicalvolume
-    elsif find_document_model(@uuid).to_s == "periodicalitem"
+    elsif @document_model == "periodicalitem"
+        @type_of_resource = "Číslo periodika"
         puts create_iiif_periodicalissue
-    else puts find_document_model(@uuid).to_s
+    else puts @document_model
     end
 end
 
 
 puts create_iiif
+
