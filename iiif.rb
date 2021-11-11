@@ -3,35 +3,55 @@ require 'open-uri'
 require 'nokogiri'
 require 'json'
 require 'typhoeus'
+require 'fastimage'
 
-@uuid = ARGV[0]
-@kramerius = "https://kramerius.mzk.cz"
+# @uuid = ARGV[0]
+if ARGV.length == 1
+    @link = ARGV[0]
+    @library = @link.split("/")[3]
+    object = @link.split("/")[5]
+    @uuid = object.split("?")[0]
+else 
+    @library = ARGV[0]
+    @uuid = ARGV[1]
+end
 @registrkrameriu = "https://registr.digitalniknihovna.cz/libraries.json"
 @url_manifest = "https://api.pavlarychtarova.cz/iiif"
 @mods
+@canvasIndex = 0
+
 @languages = {"cze" => "čeština", "ger" => "němčina", "eng" => "angličtina", "lat" => "latina", "fre" => "francouzština",
               "rus" => "ruština", "pol" => "polština", "slv" => "slovinština", "slo" => "slovenština", 
               "ita" => "italština", "dut" => "nizozemština",
               "und" => "neurčený jazyk", "zxx" => "žádný lingvistický obsah"}
- 
+@api = {
+    "mzk" => "https://kramerius.mzk.cz", 
+    "nkp" => "https://kramerius5.nkp.cz", 
+    "mlp" => "https://kramerius4.mlp.cz", 
+    "knav" => "https://kramerius.lib.cas.cz"
+}
+
 def get_xml(url)
-    uri = URI(url) #uri = URI(URI.encode(url))
+    uri = URI(url) 
+    # uri = URI(URI.encode(url))
     https = Net::HTTP.new(uri.host, uri.port)
     https.use_ssl = true
+    https.verify_mode = OpenSSL::SSL::VERIFY_PEER
     https.open_timeout = 100
     https.read_timeout = 100
     request = Net::HTTP::Get.new(uri)
     request["Accept"] = 'application/xml'
-    begin
-        response = https.request(request).read_body
-        return response
-    rescue
-        if run == 0
-            return nil
-        else
-            get_xml(url, run - 1) 
-        end
-    end
+    response = https.request(request).read_body
+    # begin
+    #     response = https.request(request).read_body
+    #     return response
+    # rescue
+    #     if run == 0
+    #         return nil
+    #     else
+    #         get_xml(url, run - 1) 
+    #     end
+    # end
 end
 
 def get_json(url)
@@ -50,17 +70,22 @@ end
 def control_404(url)
     response = Net::HTTP.get_response(URI(url))
     error = response.is_a?(Net::HTTPNotFound)
-    result = error
+    code = response.code
+    if code.to_i > 400
+        result = true
+    end
     return !result
 end
 
 def find_document_model(pid)
     document = {}
     uuid = "#{@uuid}".to_json
-    object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,fedora.model,root_title,details&q=PID:#{uuid}&rows=1500&start=0")
+    @kramerius = create_provider(@library)[1]
+    object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,fedora.model,root_title,details,title&q=PID:#{uuid}&rows=1500&start=0")
     response_body = object["response"]["docs"]
     document["model"] = response_body[0]["fedora.model"]
     document["root_title"] = response_body[0]["root_title"].split(":")[0]
+    document["title"] = response_body[0]["title"]
     if document["model"].to_s == "periodicalvolume"
         if !response_body[0]["details"][0].split("##")[0].nil?
             document["date"] = response_body[0]["details"][0].split("##")[0].strip.sub(" ", "")
@@ -134,6 +159,10 @@ def mods_extractor
         if !titleInfo.at("partNumber").nil?
             partNumber = titleInfo.at("partNumber").text
             mods["partNumber"] = partNumber
+        end
+        if !titleInfo.at("partName").nil?
+            partName = titleInfo.at("partName").text
+            mods["partName"] = partName
         end
     end
 
@@ -238,14 +267,20 @@ def mods_extractor
         end
         mods["languages"] = langs
     end
+    # coordinates
+    xmldoc.xpath("modsCollection/mods/subject/cartographics/coordinates").each do |c|
+        mods["coordinates"] = c.text
+    end
     return mods
 end
 
-def create_label
+def create_label(uuid)
     label = {}
     if @document_model == "periodicalvolume" || @document_model == "periodicalitem"
         partDate = @mods["date"]
         label = {"none" => ["#{@root_title} (#{@document["date"]})"]}
+    elsif @document_model == "soundunit"
+            label = {"none" => ["#{@root_title} (#{@mods["partName"]})"]}
     else label = {"cz" => [@mods["title"]]}
     end
     return label
@@ -278,7 +313,11 @@ def create_metadata
         date = {"label" => {"cz" => ["Vydáno"]}, "value" => {"none" => [@document["date"]]}}
         metadata.push(number)
         metadata.push(date)
-
+    elsif @document_model == "soundunit"
+        number = {"label" => {"cz" => ["Číslo části"]}, "value" => {"none" => [@mods["partNumber"]]}}
+        name = {"label" => {"cz" => ["Název části"]}, "value" => {"none" => [@mods["partName"]]}}
+        metadata.push(number)
+        metadata.push(name)
     elsif @mods["published"].length > 0
         published = {"label" => {"cz" => ["Nakladatelské údaje"]}, "value" => {"none" => [@mods["published"]]}}
         metadata.push(published)
@@ -291,16 +330,16 @@ def create_metadata
     return metadata
 end
 
-def create_provider(sigla)
+def create_provider(library)
     object = get_json("https://registr.digitalniknihovna.cz/libraries.json")
-    id = object.find {|h1| h1['sigla'] == sigla}["library_url"]
+    id = object.find {|h1| h1['code'] == library}["library_url"]
     # id = object[0]["library_url"]
-    label_cz = object.find {|h1| h1['sigla'] == sigla}["name"]
-    label_en = object.find {|h1| h1['sigla'] == sigla}["name_en"]
-    homepage = object.find {|h1| h1['sigla'] == sigla}["url"]
-    logo = object.find {|h1| h1['sigla'] == sigla}["logo"]
+    label_cz = object.find {|h1| h1['code'] == library}["name"]
+    label_en = object.find {|h1| h1['code'] == library}["name_en"]
+    homepage = object.find {|h1| h1['code'] == library}["url"]
+    logo = object.find {|h1| h1['code'] == library}["logo"]
     provider = [{"id" => id, "type" => "Agent", "label" => {"cz" => [label_cz]}, "homepage" => [{ "id" => homepage, "type" => "Text", "label" => {"cz" => [label_cz]}, "format" => "text/html"}], "logo" => [{"id" => logo, "type" => "Image", "format" => "image/png"}]}]
-    return provider
+    return [provider, homepage]
 end
 
 def create_homepage
@@ -309,12 +348,14 @@ def create_homepage
     sigla = @mods["sigla"]
     homepage = []
     if !uuid.nil?
-        dk = {"id" => "https://www.digitalniknihovna.cz/mzk/uuid/#{uuid}", "type" => "Text", "label" => { "cz" => ["Odkaz do Digitální knihovny"]}}
+        dk = {"id" => "https://www.digitalniknihovna.cz/#{@library}/uuid/#{uuid}", "type" => "Text", "label" => { "cz" => ["Odkaz do Digitální knihovny"]}}
         homepage.push(dk)
     end
-    if !sysno.nil?
-        vufind = {"id" => "https://vufind.mzk.cz/Record/#{sigla}-#{sysno}", "type" => "Text", "label" => { "cz" => ["Odkaz do Vufindu"]}}
-        homepage.push(vufind)
+    if @library == "mzk"
+        if !sysno.nil?
+            vufind = {"id" => "https://vufind.mzk.cz/Record/#{sigla}-#{sysno}", "type" => "Text", "label" => { "cz" => ["Odkaz do Vufindu"]}}
+            homepage.push(vufind)
+        end
     end
     return homepage
 end
@@ -333,7 +374,7 @@ def create_behavior
     return behavior
 end
 
-def create_thumbnail
+def create_thumbnail(uuid)
     # https://kramerius.mzk.cz/search/api/v5.0/item/uuid:bdc28360-3fc8-11e7-b3c8-005056825209/thumb
     thumbnail = {"id" => "#{@kramerius}/search/api/v5.0/item/#{@uuid}/thumb",
                  "type" => "Image",
@@ -346,18 +387,87 @@ def create_thumbnail
     return [thumbnail]
 end
 
-def create_list_of_pages
-    uuid = "#{@uuid}".to_json
+def create_navPlace
+    type = "Polygon"
+    coordinates = parse_coordinates
+    features = {
+        "id" => "#{@url_manifest}/#{@library}/#{@uuid}/feature/1",
+        "type" => "Feature",
+        "properties" => {
+            "label" => {"en" => [@title]}
+        },
+        "geometry" => {
+            "type" => type,
+            "coordinates" => [coordinates]
+        }
+    }
+    navPlace = {
+        "id" => "#{@url_manifest}/#{@library}/#{@uuid}/feature",
+        "type" => "FeatureCollection",
+        "features" => [features]
+    }
+    return navPlace
+end
+def parse_coordinates
+    input = @mods["coordinates"]
+    reg1 = "^\\((\\d{1,3})°(\\d{1,2})\´(\\d{1,2})\"\\s([v,z]{1})\.d\.--(\\d{1,3})°(\\d{1,2})\´(\\d{1,2})\"\\s([v,z]{1})\.d\.\/(\\d{1,3})°(\\d{1,2})\´(\\d{1,2})\"\\s([s,j]{1})\.š\.--(\\d{1,3})°(\\d{1,2})\´(\\d{1,2})\"\\s([s,j]{1})\.š\.\\)$"
+    reg2 = "^\\(([E,W]{1})\\s(\\d{1,3})°(\\d{1,2})'(\\d{1,2})\"--([E,W]{1})\\s(\\d{1,3})°(\\d{1,2})'(\\d{1,2})\"\/([S,N]{1})\\s(\\d{1,3})°(\\d{1,2})'(\\d{1,2})\"--([S,N]{1})\\s(\\d{1,3})°(\\d{1,2})'(\\d{1,2})\"\\)$"
+    output = input.match(reg1)
+    output2 = input.match(reg2)
+    # d1s1 d2s1
+    # d1s2 d2s2
+    if !output.nil?
+        d1x = output[4]
+        d1 = (output[1].to_f + (output[2].to_f/60) + (output[3].to_f/3600))
+        d2x = output[8]
+        d2 = (output[5].to_f + (output[6].to_f/60) + (output[7].to_f/3600))
+        s1x = output[12]
+        s1 = (output[9].to_f + (output[10].to_f/60) + (output[11].to_f/3600))
+        s2x = output[16]
+        s2 = (output[13].to_f + (output[14].to_f/60) + (output[14].to_f/3600))
+        if d1x == "z"
+            d1 = d1*-1
+        end
+        if d2x == "z"
+            d2 = d2*-1
+        end
+        if s1x == "j"
+            s1 = s1*-1
+        end
+        if s2x == "j"
+            s2 = s2*-1
+        end
+        coordinates = [[d1, s1], [d2, s1], [d1, s2], [d2, s2]]
+    elsif !output2.nil?
+        d1x = output2[1]
+        d1 = (output2[2].to_f + (output2[3].to_f/60) + (output2[4].to_f/3600))
+        d2x = output2[5]
+        d2 = (output2[6].to_f + (output2[7].to_f/60) + (output2[8].to_f/3600))
+        s1x = output2[9]
+        s1 = (output2[10].to_f + (output2[11].to_f/60) + (output2[12].to_f/3600))
+        s2x = output2[13]
+        s2 = (output2[14].to_f + (output2[15].to_f/60) + (output2[16].to_f/3600))
+        if d1x == "W"
+            d1 = d1*-1
+        elsif d2x == "W"
+            d2 = d2*-1
+        elsif s1x == "S"
+            s1 = s1*-1
+        elsif s2x == "S"
+            s2 = s2*-1
+        end
+        coordinates = [[d1, s1], [d2, s1], [d1, s2], [d2, s2]]
+    end
+    return coordinates
+end
 
+def create_list_of_pages(uuid)
     # nactu a seradim si stranky    
     object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,details,rels_ext_index&q=parent_pid:#{uuid} AND fedora.model:page&rows=1500&start=0")
     response_body = object["response"]["docs"]
     sorted_object = response_body.sort { |a, b| a["rels_ext_index"] <=> b["rels_ext_index"]}
-    # puts JSON.pretty_generate(sorted_object)
-
     pids = []
     pages = []
-    @canvasIndex = 0
     
     # pro kazdou stranku:
     sorted_object.each do |page|
@@ -368,10 +478,11 @@ def create_list_of_pages
         index = @canvasIndex
 
         # id pro vsechny urovne
-        page_properties["canvas_id"] = "#{@url_manifest}/#{@uuid}/canvases/#{index}"
-        page_properties["annotationPage_id"] = "#{@url_manifest}/#{@uuid}/canvases/#{index}/ap"
-        page_properties["annotation_id"] = "#{@url_manifest}/#{@uuid}/canvases/#{index}/ap/a"
-        page_properties["body_id"] = "#{@kramerius}/search/iiif/#{uuid_page}/full/full/0/default.jpg"
+        page_properties["canvas_id"] = "#{@url_manifest}/#{@library}/#{@uuid}/canvases/#{index}"
+        page_properties["annotationPage_id"] = "#{@url_manifest}/#{@library}/#{@uuid}/canvases/#{index}/ap"
+        page_properties["annotation_id"] = "#{@url_manifest}/#{@library}/#{@uuid}/canvases/#{index}/ap/a"
+        page_properties["body_id_iiif"] = "#{@kramerius}/search/iiif/#{uuid_page}/full/full/0/default.jpg"
+        page_properties["body_id_imgfull"] = "#{@kramerius}/search/api/v5.0/item/#{uuid_page}/streams/IMG_FULL"
         page_properties["alto_id"] = "#{@kramerius}/search/api/v5.0/item/#{uuid_page}/streams/ALTO"
         page_properties["thumb_id"] = "#{@kramerius}/search/api/v5.0/item/#{uuid_page}/thumb"
 
@@ -388,80 +499,70 @@ def create_list_of_pages
         end
         pages.push(page_properties)
         @canvasIndex += 1
-        # puts "sorted object -  end" + Time.now.to_s
+    end
+
+    if !pages[0].nil?
+        @image_iiif = control_404("#{@kramerius}/search/iiif/#{pages[0]['pid']}/info.json")
     end
 
     # typhoeus test
-    hydra = Typhoeus::Hydra.new
-    requests = pids.map{ |pid|
-        # puts "hydra" + Time.now.to_s
-        request = Typhoeus::Request.new( 
-        "#{@kramerius}/search/iiif/#{pid}/info.json",
-        method: :get,
-        headers: {
-            "Content-Type" => "application/json"
-        },
-        followlocation: true
-        )
-        hydra.queue(request)
-        request
-    }
-    hydra.run
-    responses = requests.map { |request|
-        # puts "hydra - end " + Time.now.to_s
-        JSON(request.response.body) if request.response.code === 200
-    }
+    if @image_iiif
+        hydra = Typhoeus::Hydra.new
+        requests = pids.map{ |pid|
+            request = Typhoeus::Request.new( 
+            "#{@kramerius}/search/iiif/#{pid}/info.json",
+            method: :get,
+            headers: {
+                "Content-Type" => "application/json"
+            },
+            followlocation: true
+            )
+            hydra.queue(request)
+            request
+        }
+        hydra.run
+        responses = requests.map { |request|
+            JSON(request.response.body) if request.response.code === 200
+        }
 
-    pages.each do |page|
-        # puts "kombinace" + Time.now.to_s
-        pid2 = "#{@kramerius}/search/iiif/#{page["pid"]}"
-        responses.each do |item|
-            if !item["@id"].nil?
-                if pid2 === item["@id"]
-                    page["max_width"] = item["width"]
-                    page["max_height"] = item["height"]
-                    page["thumb_width"] = item["sizes"][0]["width"]
-                    page["thumb_height"] = item["sizes"][0]["height"]
-                    page["width"] = item["sizes"][item["sizes"].length - 1]["width"]
-                    page["height"] = item["sizes"][item["sizes"].length - 1]["height"]
+        pages.each do |page|
+            pid2 = "#{@kramerius}/search/iiif/#{page["pid"]}"
+            if !responses.nil?
+                responses.each do |item|
+                    if !item["@id"].nil?
+                        if pid2 === item["@id"]
+                            page["max_width"] = item["width"]
+                            page["max_height"] = item["height"]
+                            page["thumb_width"] = item["sizes"][0]["width"]
+                            page["thumb_height"] = item["sizes"][0]["height"]
+                            page["width"] = item["sizes"][item["sizes"].length - 1]["width"]
+                            page["height"] = item["sizes"][item["sizes"].length - 1]["height"]
+                        end
+                    end
                 end
+            end
+        end
+    else
+        pages.each do |page|
+            if !page["body_id_imgfull"].nil?
+                size = FastImage.size(page["body_id_imgfull"])
+                page["width"] = size[0]
+                page["height"] = size[1]
+                page["thumb_width"] = size[0].to_i/10
+                page["thumb_height"] = size[1].to_i/10
             end
         end
     end
     return pages
 end
 
-def create_list_of_mp3
-    # TODO DURATION AZ OD VERZE API K7
-    uuid = "#{@uuid}".to_json
-    object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,details,rels_ext_index,title&q=root_pid:#{uuid} AND fedora.model:track&rows=1500&start=0")
-    response_body = object["response"]["docs"]
-    tracks = []
-    
-    response_body.each do |track|
-        index = @canvasIndex
-        track_properties = {}
-        track_properties["title"] = track["title"]
-        track_properties["uuid"] = track["PID"]
-        # TODO track_properties["duration"] = 
-        track_properties["duration"] = 1234.0
-        track_properties["body_id"] = "#{@kramerius}/search/api/v5.0/item/#{track["PID"]}/streams/MP3"
-        track_properties["canvas_id"] = "#{@url_manifest}/#{@uuid}/canvases/#{index}"
-        track_properties["annotationPage_id"] = "#{@url_manifest}/#{@uuid}/canvases/#{index}/ap"
-        track_properties["annotation_id"] = "#{@url_manifest}/#{@uuid}/canvases/#{index}/ap/a"
-        @canvasIndex += 1
-        tracks.push(track_properties)
-        
-    end
-    
-    return tracks
-end
-
-def create_items_pages
+def create_items_pages(uuid)
+    uuid = uuid.to_json
     itemsCanvas = []
-    pages = create_list_of_pages
-    alto = control_404("#{@kramerius}/search/api/v5.0/item/#{pages[0]['pid']}/streams/ALTO")
-
+    pages = create_list_of_pages(uuid)
+    if !pages[0].nil?
+        alto = control_404("#{@kramerius}/search/api/v5.0/item/#{pages[0]['pid']}/streams/ALTO")
+    end
     pages.each do |page|
         itemsAnnotationPage = []
         itemsAnnotation = []
@@ -483,13 +584,22 @@ def create_items_pages
                             "height" => page["thumb_height"], 
                             # TODO "service" => [thumb_service]
                             }
-        body = {"id" => page["body_id"], 
+        if @image_iiif 
+            body = {"id" => page["body_id_iiif"], 
                 "type" => "Image", 
                 "width" => page["width"], 
                 "height" => page["height"], 
                 "format" => "image/jpeg", 
                 "service" => [body_service]
                 }
+        else 
+            body = {"id" => page["body_id_imgfull"], 
+                "type" => "Image", 
+                "width" => page["width"], 
+                "height" => page["height"], 
+                "format" => "image/jpeg", 
+                }
+        end
         annotation = {"id" => page["annotation_id"], 
                       "type" => "Annotation", 
                       "motivation" => "painting", 
@@ -524,41 +634,72 @@ def create_items_pages
         itemsAnnotationPage.push(annotationPage)
         itemsCanvas.push(canvas)
     end
+    return itemsCanvas
+end
 
-    if @document_model == "soundrecording"
-        tracks = create_list_of_mp3
-        tracks.each do |track|
-            itemsAnnotationPage = []
-            itemsAnnotation = []
-            body = {"id" => track["body_id"], 
-                "type" => "Sound", 
-                #TODO "duration" => track["duration"],
-                "duration" => track["duration"],
-                "format" => "audio/mp3", 
-                #TODO "service" => [body_service]
-                }
-            annotation = {"id" => track["annotation_id"], 
-                "type" => "Annotation", 
-                "motivation" => "painting", 
-                "body" => body, 
-                "target" => track["canvas_id"]
+def create_list_of_mp3(uuid)
+    # TODO DURATION AZ OD VERZE API K7
+    uuid2 = uuid.to_json
+    object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,details,rels_ext_index,title&q=parent_pid:#{uuid2} AND fedora.model:track&rows=1500&start=0")
+    response_body = object["response"]["docs"]
+    tracks = []
+    
+    response_body.each do |track|
+        index = @canvasIndex
+        track_properties = {}
+        track_properties["title"] = track["title"]
+        track_properties["uuid"] = track["PID"]
+        # TODO track_properties["duration"] = 
+        track_properties["duration"] = 1234.0
+        track_properties["thumb_id"] = "#{@kramerius}/search/api/v5.0/item/#{uuid}/thumb"
+        track_properties["body_id"] = "#{@kramerius}/search/api/v5.0/item/#{track["PID"]}/streams/MP3"
+        track_properties["canvas_id"] = "#{@url_manifest}/#{@library}/#{@uuid}/canvases/#{index}"
+        track_properties["annotationPage_id"] = "#{@url_manifest}/#{@library}/#{@uuid}/canvases/#{index}/ap"
+        track_properties["annotation_id"] = "#{@url_manifest}/#{@library}/#{@uuid}/canvases/#{index}/ap/a"
+        @canvasIndex += 1
+        tracks.push(track_properties)     
+    end   
+    return tracks
+end
+
+def create_items_tracks(uuid)
+    itemsCanvas = []
+    tracks = create_list_of_mp3(uuid)
+    tracks.each do |track|
+        itemsAnnotationPage = []
+        itemsAnnotation = []
+        track_thumbnail = {"id" => track["thumb_id"],
+                            "type" => "Image",
+                            "format" => "image/jpeg"
+                            }
+        body = {"id" => track["body_id"], 
+            "type" => "Sound", 
+            #TODO "duration" => track["duration"],
+            "duration" => track["duration"],
+            "format" => "audio/mp3", 
+            #TODO "service" => [body_service]
             }
-            annotationPage = {"id" => track["annotationPage_id"], 
-                "type" => "AnnotationPage", 
-                "items" => itemsAnnotation
-            }
-            canvas = {"id" => track["canvas_id"], 
-                "type" => "Canvas", 
-                "label" => { "none" => [track["title"]]},
-                "duration" => track["duration"],
-                "thumbnail" => [canvas_thumbnail], 
-                # "seeAlso" => [seeAlso], 
-                "items" => itemsAnnotationPage
-            }
-            itemsAnnotation.push(annotation)
-            itemsAnnotationPage.push(annotationPage)
-            itemsCanvas.push(canvas)
-        end
+        annotation = {"id" => track["annotation_id"], 
+            "type" => "Annotation", 
+            "motivation" => "painting", 
+            "body" => body, 
+            "target" => track["canvas_id"]
+        }
+        annotationPage = {"id" => track["annotationPage_id"], 
+            "type" => "AnnotationPage", 
+            "items" => itemsAnnotation
+        }
+        canvas = {"id" => track["canvas_id"], 
+            "type" => "Canvas", 
+            "label" => { "none" => [track["title"]]},
+            "duration" => track["duration"],
+            "thumbnail" => [track_thumbnail], 
+            # "seeAlso" => [seeAlso], 
+            "items" => itemsAnnotationPage
+        }
+        itemsAnnotation.push(annotation)
+        itemsAnnotationPage.push(annotationPage)
+        itemsCanvas.push(canvas)
     end
     return itemsCanvas
 end
@@ -576,8 +717,8 @@ def part_of
             uuid = pid.to_json
             object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,title,root_title,fedora.model&rows=1500&start=0&q=PID:#{uuid}")
             response_body = object["response"]["docs"][0]
-            if response_body["fedora.model"] == "periodical" || response_body["fedora.model"] == "periodicalvolume"
-                item["id"] = "#{@url_manifest}/#{pid}"
+            if response_body["fedora.model"] == "periodical" || response_body["fedora.model"] == "periodicalvolume" || response_body["fedora.model"] == "soundrecording"
+                item["id"] = "#{@url_manifest}/#{@library}/#{pid}"
                 item["type"] = "Collection"
                 item["label"] = response_body["root_title"]
             end
@@ -603,17 +744,34 @@ end
 
 # ---------- MONOGRAFIE -----------
 def create_iiif_monograph
-    iiif = {"@context" => "https://iiif.io/api/presentation/3/context.json", 
-                "id" => "#{@url_manifest}/#{@uuid}", 
-                "type" => "Manifest", 
-                "label" => create_label, 
-                "metadata" => create_metadata, 
-                # "behavior" => create_behavior, 
-                "provider" => create_provider("BOA001"), 
-                "homepage" => create_homepage,
-                "thumbnail" => create_thumbnail,
-                "items" => create_items_pages
-            }
+    if !@mods["coordinates"].nil?
+        context = ["http://iiif.io/api/extension/navplace/context.json", "http://iiif.io/api/presentation/3/context.json"]
+        iiif = {"@context" => context, 
+            "id" => "#{@url_manifest}/#{@library}/#{@uuid}", 
+            "type" => "Manifest", 
+            "label" => create_label(@uuid), 
+            "metadata" => create_metadata, 
+            # "behavior" => create_behavior, 
+            "provider" => create_provider(@library)[0], 
+            "homepage" => create_homepage,
+            "thumbnail" => create_thumbnail(@uuid),
+            "navPlace" => create_navPlace,
+            "items" => create_items_pages(@uuid)
+        }
+    else
+        context = "https://iiif.io/api/presentation/3/context.json"
+        iiif = {"@context" => context, 
+            "id" => "#{@url_manifest}/#{@library}/#{@uuid}", 
+            "type" => "Manifest", 
+            "label" => create_label(@uuid), 
+            "metadata" => create_metadata, 
+            # "behavior" => create_behavior, 
+            "provider" => create_provider(@library)[0], 
+            "homepage" => create_homepage,
+            "thumbnail" => create_thumbnail(@uuid),
+            "items" => create_items_pages(@uuid)
+        }
+    end
     return JSON.pretty_generate(iiif)
 end
 # ---------- KONEC MONOGRAFIE -----------
@@ -622,14 +780,14 @@ end
 
 def create_iiif_periodicalissue
     iiif = {"@context" => "https://iiif.io/api/presentation/3/context.json", 
-                "id" => "#{@url_manifest}/#{@uuid}", 
+                "id" => "#{@url_manifest}/#{@library}/#{@uuid}", 
                 "type" => "Manifest", 
-                "label" => create_label, 
+                "label" => create_label(@uuid), 
                 "metadata" => create_metadata, 
-                "provider" => create_provider("BOA001"), 
+                "provider" => create_provider(@library)[0],
                 "homepage" => create_homepage_periodical_volume_issue,
-                "thumbnail" => create_thumbnail,
-                "items" => create_items_pages,
+                "thumbnail" => create_thumbnail(@uuid),
+                "items" => create_items_pages(@uuid),
                 "partOf" => part_of
             }
     return JSON.pretty_generate(iiif)
@@ -640,13 +798,13 @@ end
 
 def create_iiif_periodicalvolume
     iiif = {"@context" => "https://iiif.io/api/presentation/3/context.json", 
-                "id" => "#{@url_manifest}/#{@uuid}", 
+                "id" => "#{@url_manifest}/#{@library}/#{@uuid}", 
                 "type" => "Collection", 
-                "label" => create_label, 
+                "label" => create_label(@uuid), 
                 "metadata" => create_metadata, 
-                "provider" => create_provider("BOA001"), 
+                "provider" => create_provider(@library)[0], 
                 "homepage" => create_homepage_periodical_volume_issue,
-                "thumbnail" => create_thumbnail,
+                "thumbnail" => create_thumbnail(@uuid),
                 "items" => create_items_periodical_issues,
                 "partOf" => part_of
             }
@@ -687,7 +845,7 @@ def create_items_periodical_issues
     issues = create_list_of_periodical_issues
 
     issues.each do |issue|
-        item = {"id" => "#{@url_manifest}/#{issue["pid"]}",
+        item = {"id" => "#{@url_manifest}/#{@library}/#{issue["pid"]}",
                 "type" => "Manifest",
                 "label" => "#{@root_title} (#{issue["issue_date"]})"
                }
@@ -701,13 +859,13 @@ end
 # ---------- TITUL PERIODIKA -----------
 def create_iiif_periodical
     iiif = {"@context" => "https://iiif.io/api/presentation/3/context.json",
-                "id" => "#{@url_manifest}/#{@uuid}", 
+                "id" => "#{@url_manifest}/#{@library}/#{@uuid}", 
                 "type" => "Collection", 
-                "label" => create_label, 
+                "label" => create_label(@uuid), 
                 "metadata" => create_metadata, 
-                "provider" => create_provider("BOA001"), 
+                "provider" => create_provider(@library)[0], 
                 "homepage" => create_homepage,
-                "thumbnail" => create_thumbnail,
+                "thumbnail" => create_thumbnail(@uuid),
                 "items" => create_items_periodical_volumes
             }
     return JSON.pretty_generate(iiif)
@@ -748,7 +906,7 @@ def create_items_periodical_volumes
     itemsVolumes = []
     volumes = create_list_of_periodical_volumes
     volumes.each do |volume|
-        item = {"id" => "#{@url_manifest}/#{volume["pid"]}",
+        item = {"id" => "#{@url_manifest}/#{@library}/#{volume["pid"]}",
                 "type" => "Collection",
                 "label" => volume["volume_date"]
                }
@@ -758,12 +916,97 @@ def create_items_periodical_volumes
 end
 # ---------- KONEC TITUL PERIODIKA -----------
 
+# # ---------- SOUNDUNIT -----------
+# def create_iiif_soundunit
+#     iiif = {"@context" => "https://iiif.io/api/presentation/3/context.json", 
+#                 "id" => "#{@url_manifest}/#{@library}/#{@uuid}", 
+#                 "type" => "Manifest", 
+#                 "label" => create_label(@uuid), 
+#                 "metadata" => create_metadata, 
+#                 "provider" => create_provider("BOA001"), 
+#                 "homepage" => create_homepage_periodical_volume_issue,
+#                 "thumbnail" => create_thumbnail(@uuid),
+#                 "items" => create_items_tracks(@uuid),
+#                 "partOf" => part_of
+#             }
+#     return JSON.pretty_generate(iiif)
+# end
+# # ---------- KONEC SOUNDUNIT -----------
+
+# ---------- SOUNDRECORDING -----------
+def create_iiif_soundrecording
+    @soundrecordings = create_items_soundrecording
+    iiif = {"@context" => "https://iiif.io/api/presentation/3/context.json",
+                "id" => "#{@url_manifest}/#{@library}/#{@uuid}", 
+                "type" => "Manifest", 
+                "label" => create_label(@uuid), 
+                "metadata" => create_metadata, 
+                "provider" => create_provider(@library)[0], 
+                "homepage" => create_homepage,
+                "thumbnail" => create_thumbnail(@uuid),
+                "items" => @soundrecordings[0],
+                "structures" => @soundrecordings[1]
+            }
+    return JSON.pretty_generate(iiif)
+end
+def create_items_soundrecording
+    @rangeIndex = 0
+    canvases = create_items_pages(@uuid)
+    structures = []
+    soundunits = create_list_of_soundunits
+    soundunits.each do |soundunit|
+        su_uuid = soundunit["pid"]
+        index = @rangeIndex
+        range_items = []
+        # soundunit_pages = create_items_pages(su_uuid)
+        # soundunit_pages.each do |page|
+        #     canvases.push(page)
+        #     range_canvas = {"id" => page["id"], "type" => page["type"]}
+        #     range_items.push(range_canvas)
+        # end
+        soundunit_mp3s = create_items_tracks(su_uuid)
+        soundunit_mp3s.each do |mp3|
+            canvases.push(mp3)
+            range_canvas = {"id" => mp3["id"], "type" => mp3["type"]}
+            range_items.push(range_canvas)
+        end
+        range = {"id" => "#{@url_manifest}/#{@library}/#{@uuid}/range/#{index}",
+                 "type" => "Range",
+                 "label" => "#{soundunit["title"]}",
+                 "items" => range_items
+                }
+        @rangeIndex += 1
+        structures.push(range)
+    end
+    return [canvases, structures]
+end
+def create_list_of_soundunits
+    uuid = "#{@uuid}".to_json
+    object_soundunit = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,details,rels_ext_index,title&q=parent_pid:#{uuid} AND fedora.model:soundunit&rows=1500&start=0")
+    soundunit_body = object_soundunit["response"]["docs"]
+    # object_page = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,details,rels_ext_index,title&q=parent_pid:#{uuid} AND fedora.model:page&rows=1500&start=0")
+    # page_body = object_page["response"]["docs"]
+    soundunits = []
+    soundunit_body.each do |soundunit|
+        soundunit_properties = {}
+        soundunit_properties["pid"] = soundunit["PID"]
+        soundunit_properties["title"] = soundunit["title"]
+        soundunits.push(soundunit_properties)
+    end
+    return soundunits
+end
+
+# ---------- KONEC SOUNDRECORDING -----------
+
 
 def create_iiif
+    @kramerius = create_provider(@library)[1]
+    # @kramerius = @api["#{@library}"]
     @mods = mods_extractor
     @document = find_document_model(@uuid)
     @document_model = @document["model"]
     @root_title = @document["root_title"]
+    @title = @document["title"]
     if @document_model == "monograph"
         @type_of_resource = "Monografie"
         puts create_iiif_monograph
@@ -784,7 +1027,10 @@ def create_iiif
         puts create_iiif_monograph
     elsif @document_model == "soundrecording"
         @type_of_resource = "Zvuková nahrávka"
-        puts create_iiif_monograph
+        puts create_iiif_soundrecording
+    elsif @document_model == "soundunit"
+        @type_of_resource = "Zvuková nahrávka - část"
+        puts "soundunit - negeneruje iiif"
     elsif @document_model == "periodical"
         @type_of_resource = "Periodikum"
         puts create_iiif_periodical
