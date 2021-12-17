@@ -3,6 +3,8 @@ Formát url:
 
 https://api.pavlarychtarova.cz/iiif/kod_knihovny/uuid
 
+https://www.digitalniknihovna.cz
+
  
 
 Monografie
@@ -29,8 +31,6 @@ https://api.pavlarychtarova.cz/iiif/mzk/uuid:e8933b86-fecc-45cc-962c-d22e9271eee
 Mapa
 
 https://api.pavlarychtarova.cz/iiif/mzk/uuid:ba4934d1-0a1e-4a01-a89d-c948477ca833
-
-Mirador | Universal Viewer
 
 Hudebnina
 
