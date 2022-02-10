@@ -83,25 +83,36 @@ def find_document_model(pid)
     @kramerius = create_provider(@library)[1]
     object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,fedora.model,root_title,details,title&q=PID:#{uuid}&rows=1500&start=0")
     response_body = object["response"]["docs"]
-    document["model"] = response_body[0]["fedora.model"]
-    document["root_title"] = response_body[0]["root_title"].split(":")[0]
-    document["title"] = response_body[0]["title"]
-    if document["model"].to_s == "periodicalvolume"
-        if !response_body[0]["details"][0].split("##")[0].nil?
-            document["date"] = response_body[0]["details"][0].split("##")[0].strip.sub(" ", "")
+    if !object["response"]["docs"][0].nil?
+        document["model"] = response_body[0]["fedora.model"]
+        document["root_title"] = response_body[0]["root_title"].split(":")[0]
+        document["title"] = response_body[0]["title"]
+        if document["model"].to_s == "periodicalvolume"
+            if !response_body[0]["details"][0].split("##")[0].nil?
+                document["date"] = response_body[0]["details"][0].split("##")[0].strip.sub(" ", "")
+            end
+            if !response_body[0]["details"][0].split("##")[1].nil?
+                document["number"] = response_body[0]["details"][0].split("##")[1].strip.sub(" ", "")
+            end  
         end
-        if !response_body[0]["details"][0].split("##")[1].nil?
-            document["number"] = response_body[0]["details"][0].split("##")[1].strip.sub(" ", "")
-        end  
-    end
-    if document["model"].to_s == "periodicalitem"
-        if !response_body[0]["details"][0].split("##")[2].nil?
-            document["date"] = response_body[0]["details"][0].split("##")[2].strip.sub(" ", "")
+        if document["model"].to_s == "periodicalitem"
+            if !response_body[0]["details"][0].split("##")[2].nil?
+                document["date"] = response_body[0]["details"][0].split("##")[2].strip.sub(" ", "")
+            end
+            if !response_body[0]["details"][0].split("##")[3].nil?
+                document["number"] = response_body[0]["details"][0].split("##")[3].strip.sub(" ", "")
+            end  
         end
-        if !response_body[0]["details"][0].split("##")[3].nil?
-            document["number"] = response_body[0]["details"][0].split("##")[3].strip.sub(" ", "")
-        end  
+        if document["model"].to_s == "monograph"
+            object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,details,rels_ext_index,fedora.model&q=parent_pid:#{uuid} AND fedora.model:monographunit&rows=1500&start=0")
+            response_body = object["response"]["docs"]
+            if !response_body[0].nil?
+                document["model"] = 'monographcollection'
+            end
+        end
+
     end
+    #  puts document
     return document
 end
 
@@ -337,9 +348,10 @@ def create_provider(library)
     label_cz = object.find {|h1| h1['code'] == library}["name"]
     label_en = object.find {|h1| h1['code'] == library}["name_en"]
     homepage = object.find {|h1| h1['code'] == library}["url"]
+    version = object.find {|h1| h1['code'] == library}["version"]
     logo = object.find {|h1| h1['code'] == library}["logo"]
     provider = [{"id" => id, "type" => "Agent", "label" => {"cz" => [label_cz]}, "homepage" => [{ "id" => homepage, "type" => "Text", "label" => {"cz" => [label_cz]}, "format" => "text/html"}], "logo" => [{"id" => logo, "type" => "Image", "format" => "image/png"}]}]
-    return [provider, homepage]
+    return [provider, homepage, version]
 end
 
 def create_homepage
@@ -388,8 +400,8 @@ def create_thumbnail(uuid)
 end
 
 def create_navPlace
-    type = "Polygon"
     coordinates = parse_coordinates
+    type = coordinates[0]
     features = {
         "id" => "#{@url_manifest}/#{@library}/#{@uuid}/feature/1",
         "type" => "Feature",
@@ -398,7 +410,7 @@ def create_navPlace
         },
         "geometry" => {
             "type" => type,
-            "coordinates" => [coordinates]
+            "coordinates" => [coordinates[1]]
         }
     }
     navPlace = {
@@ -424,7 +436,7 @@ def parse_coordinates
         s1x = output[12]
         s1 = (output[9].to_f + (output[10].to_f/60) + (output[11].to_f/3600))
         s2x = output[16]
-        s2 = (output[13].to_f + (output[14].to_f/60) + (output[14].to_f/3600))
+        s2 = (output[13].to_f + (output[14].to_f/60) + (output[15].to_f/3600))
         if d1x == "z"
             d1 = d1*-1
         end
@@ -437,7 +449,11 @@ def parse_coordinates
         if s2x == "j"
             s2 = s2*-1
         end
-        coordinates = [[d1, s1], [d2, s1], [d1, s2], [d2, s2]]
+        if (d1 == d2 && s1 == s2)
+            coordinates = ["Point", [d1, s1]]
+        else
+            coordinates = ["Polygon", [[d1, s1], [d2, s1], [d1, s2], [d2, s2]]]
+        end
     elsif !output2.nil?
         d1x = output2[1]
         d1 = (output2[2].to_f + (output2[3].to_f/60) + (output2[4].to_f/3600))
@@ -456,19 +472,23 @@ def parse_coordinates
         elsif s2x == "S"
             s2 = s2*-1
         end
-        coordinates = [[d1, s1], [d2, s1], [d1, s2], [d2, s2]]
+        if (d1 == d2 && s1 == s2)
+            coordinates = ["Point", [d1, s1]]
+        else
+            coordinates = ["Polygon", [[d1, s1], [d2, s1], [d1, s2], [d2, s2]]]
+        end
     end
     return coordinates
 end
 
 def create_list_of_pages(uuid)
     # nactu a seradim si stranky    
-    object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,details,rels_ext_index&q=parent_pid:#{uuid} AND fedora.model:page&rows=1500&start=0")
+    object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,details,rels_ext_index,fedora.model&q=parent_pid:#{uuid} AND fedora.model:(page OR monographunit)&rows=1500&start=0")
     response_body = object["response"]["docs"]
     sorted_object = response_body.sort { |a, b| a["rels_ext_index"] <=> b["rels_ext_index"]}
     pids = []
     pages = []
-    
+
     # pro kazdou stranku:
     sorted_object.each do |page|
         page_properties = {}
@@ -500,9 +520,12 @@ def create_list_of_pages(uuid)
         pages.push(page_properties)
         @canvasIndex += 1
     end
-
+ 
     if !pages[0].nil?
-        @image_iiif = control_404("#{@kramerius}/search/iiif/#{pages[0]['pid']}/info.json")
+        image_iiif_control = control_404("#{@kramerius}/search/iiif/#{pages[0]['pid']}/info.json") 
+        iiif_image_body_control = !(get_xml("#{@kramerius}/search/iiif/#{pages[0]['pid']}/info.json") == '')
+        @image_iiif = image_iiif_control && iiif_image_body_control
+        # puts @image_iiif
     end
 
     # typhoeus test
@@ -524,7 +547,6 @@ def create_list_of_pages(uuid)
         responses = requests.map { |request|
             JSON(request.response.body) if request.response.code === 200
         }
-
         pages.each do |page|
             pid2 = "#{@kramerius}/search/iiif/#{page["pid"]}"
             if !responses.nil?
@@ -543,16 +565,20 @@ def create_list_of_pages(uuid)
             end
         end
     else
-        pages.each do |page|
+        pages.each do |page| 
             if !page["body_id_imgfull"].nil?
                 size = FastImage.size(page["body_id_imgfull"])
-                page["width"] = size[0]
-                page["height"] = size[1]
-                page["thumb_width"] = size[0].to_i/10
-                page["thumb_height"] = size[1].to_i/10
+                # puts size
+                if !size.nil?
+                    page["width"] = size[0]
+                    page["height"] = size[1]
+                    page["thumb_width"] = size[0].to_i/10
+                    page["thumb_height"] = size[1].to_i/10
+                end
             end
         end
     end
+    # puts pages
     return pages
 end
 
@@ -776,6 +802,66 @@ def create_iiif_monograph
 end
 # ---------- KONEC MONOGRAFIE -----------
 
+# ---------- VICESVAZKY -----------
+def create_iiif_monograph_collection
+    context = "https://iiif.io/api/presentation/3/context.json"
+    iiif = {"@context" => context, 
+        "id" => "#{@url_manifest}/#{@library}/#{@uuid}", 
+        "type" => "Collection", 
+        "label" => create_label(@uuid), 
+        "metadata" => create_metadata, 
+        # "behavior" => create_behavior, 
+        "provider" => create_provider(@library)[0], 
+        "homepage" => create_homepage,
+        "thumbnail" => create_thumbnail(@uuid),
+        "items" => create_items_monographunits
+    }
+    return JSON.pretty_generate(iiif)
+end
+
+def create_items_monographunits
+    itemsMonographunits= []
+    monographunits = create_list_of_monographunits
+
+    monographunits.each do |monographunit|
+        item = {"id" => "#{@url_manifest}/#{@library}/#{monographunit["pid"]}",
+                "type" => "Manifest",
+                "label" => "#{monographunit["label"]} "
+               }
+        itemsMonographunits.push(item)
+    end
+    return itemsMonographunits
+end
+
+def create_list_of_monographunits
+    uuid = "#{@uuid}".to_json
+    object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,details,rels_ext_index,fedora.model,title&q=parent_pid:#{uuid} AND fedora.model:monographunit&rows=1500&start=0")
+    response_body = object["response"]["docs"]
+    sorted_object = response_body.sort { |a, b| a["rels_ext_index"] <=> b["rels_ext_index"]}
+
+    monographunits = []
+
+    sorted_object.each do |monographunit|
+        monographunit_properties = {}
+        monographunit_properties["index"] = monographunit["rels_ext_index"][0]
+        monographunit_properties["pid"] = monographunit["PID"]
+        if !monographunit["details"][0].split("##")[0].nil?
+            monographunit_properties["number"] = monographunit["details"][0].split("##")[0].strip.sub(" ", "")
+            monographunit_properties["label"] = monographunit_properties["number"]
+        end
+        if !monographunit["details"][0].split("##")[1].nil?
+            monographunit_properties["title"] = monographunit["details"][0].split("##")[1].strip.sub(" ", "")
+            monographunit_properties["label"] = monographunit_properties["label"] + '. ' + monographunit_properties["title"]
+        end
+        monographunits.push(monographunit_properties)
+    end
+
+    return monographunits
+
+end
+
+# ---------- KONEC VICESVAZKY -----------
+
 # ---------- CISLO PERIODIKA -----------
 
 def create_iiif_periodicalissue
@@ -996,19 +1082,23 @@ def create_list_of_soundunits
     return soundunits
 end
 
-# ---------- KONEC SOUNDRECORDING -----------
-
-
+# ---------- KONEC SOUNDRECORDING ----------- 
 def create_iiif
     @kramerius = create_provider(@library)[1]
-    # @kramerius = @api["#{@library}"]
+    @version = create_provider(@library)[2]
     @mods = mods_extractor
     @document = find_document_model(@uuid)
     @document_model = @document["model"]
     @root_title = @document["root_title"]
     @title = @document["title"]
     if @document_model == "monograph"
-        @type_of_resource = "Monografie"
+        @type_of_resource = "Monografie"  
+        puts create_iiif_monograph
+    elsif @document_model == "monographcollection"
+        @type_of_resource = "Sbírka monografií"
+        puts create_iiif_monograph_collection
+    elsif @document_model == "monographunit"
+        @type_of_resource = "Monografie - část"
         puts create_iiif_monograph
     elsif @document_model == "map"
         @type_of_resource = "Mapa"
@@ -1040,10 +1130,11 @@ def create_iiif
     elsif @document_model == "periodicalitem"
         @type_of_resource = "Číslo periodika"
         puts create_iiif_periodicalissue
-    else puts @document_model
+    elsif @document_model.nil?
+        puts "zadané uuid v digitální knihovně " + @library + " neexistuje"
+    else puts "Pro model " + @document_model + " nelze vygenerovat IIIF Presentation API v3. Zkuste uuid nadřazeného objektu."
     end
 end
 
 
 puts create_iiif
-
