@@ -160,7 +160,7 @@ def find_document_properties(pid)
             elsif document["model"].to_s == "monograph"
                 object = get_json("#{@kramerius}/search/api/v5.0/search?fl=PID,details,rels_ext_index,fedora.model&q=parent_pid:#{uuid} AND fedora.model:monographunit&rows=1500&start=0")
                 response_body = object["response"]["docs"]
-                if !response_body.nil?
+                if !response_body[0].nil?
                     document["model"] = 'monographcollection'
                 end
             end
@@ -178,7 +178,7 @@ def find_document_properties(pid)
             elsif document["model"].to_s == "monograph"
                 object = get_json("#{@kramerius}#{@solr_url}fl=#{@fedora_model}&q=own_parent.pid:#{uuid} AND #{@fedora_model}:monographunit&rows=1500&start=0")
                 response_body = object["response"]["docs"]
-                if !response_body.nil?
+                if !response_body[0].nil?
                     document["model"] = 'monographcollection'
                 end
             end
