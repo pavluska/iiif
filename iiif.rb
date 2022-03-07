@@ -619,12 +619,12 @@ def create_list_of_pages(uuid)
         hydra = Typhoeus::Hydra.new
         requests = pids.map{ |pid|
             request = Typhoeus::Request.new( 
-            "#{@kramerius}/search/iiif/#{pid}/info.json",
-            method: :get,
-            headers: {
-                "Content-Type" => "application/json"
-            },
-            followlocation: true
+                "#{@kramerius}/search/iiif/#{pid}/info.json",
+                method: :get,
+                headers: {
+                    "Content-Type" => "application/json"
+                },
+                followlocation: true
             )
             hydra.queue(request)
             request
@@ -637,7 +637,7 @@ def create_list_of_pages(uuid)
             pid2 = "#{@kramerius}/search/iiif/#{page["pid"]}"
             if !responses.nil?
                 responses.each do |item|
-                    if !item["@id"].nil?
+                    if !item.nil?
                         if pid2 === item["@id"]
                             page["max_width"] = item["width"]
                             page["max_height"] = item["height"]
@@ -1215,7 +1215,6 @@ end
 def create_items_konvolut
     itemsKonvolut = []
     konvolut_parts = create_list_of_konvolut_parts
-    puts konvolut_parts
     konvolut_parts.each do |part|
         item = {"id" => "#{@url_manifest}/#{@library}/#{part["pid"]}",
                 "type" => "Manifest",
@@ -1231,7 +1230,6 @@ def create_list_of_konvolut_parts
     # najdu si casti konvolutu a seradim   
     object = get_json("#{@kramerius}#{@solr_url}fl=#{@pid},#{@fedora_model},#{@rels_ext_index},#{@title_url}&q=#{@parent_pid}:#{uuid}&rows=1500&start=0")
     response_body = object["response"]["docs"]
-    puts response_body
     sorted_object = response_body.sort { |a, b| a["#{@rels_ext_index}"] <=> b["#{@rels_ext_index}"]}
     
     konvolutparts = []
@@ -1357,6 +1355,9 @@ def create_iiif
     elsif @document_model == "oldprintomnibusvolume"
         @type_of_resource = "Konvolut"
         puts create_iiif_konvolut
+    elsif @document_model == "oldprintsheetmusic"
+        @type_of_resource = "oldprintsheetmusic"
+        puts create_iiif_monograph
     elsif @document_model == "collection"
         @type_of_resource = "Sbírka"
         puts create_iiif_collection
