@@ -16,7 +16,7 @@ else
     @uuid = ARGV[1]
 end
 @registrkrameriu = "https://registr.digitalniknihovna.cz/api/libraries"
-@url_manifest = "https://iiif.pavlarychtarova.cz"
+@url_manifest = "https://iiif.digitalniknihovna.cz"
 @mods
 @canvasIndex = 0
 
