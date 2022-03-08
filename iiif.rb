@@ -616,7 +616,8 @@ def create_list_of_pages(uuid)
 
     # typhoeus test
     if @image_iiif
-        hydra = Typhoeus::Hydra.new
+        # puts 'before hydra', Time.new
+        hydra = Typhoeus::Hydra.new(max_concurrency: 10)
         requests = pids.map{ |pid|
             request = Typhoeus::Request.new( 
                 "#{@kramerius}/search/iiif/#{pid}/info.json",
@@ -629,7 +630,9 @@ def create_list_of_pages(uuid)
             hydra.queue(request)
             request
         }
+        # puts 'before hydra run', Time.new
         hydra.run
+        # puts 'after hydra run', Time.new
         responses = requests.map { |request|
             JSON(request.response.body) if request.response.code === 200
         }
@@ -1305,6 +1308,7 @@ def create_list_of_collection_parts
 end
 # ---------- CREATE IIIF MANIFEST ----------- 
 def create_iiif
+    # puts Time.new
     @kramerius = create_provider(@library)[1]
     version = create_provider(@library)[2]
     @v = "k" + version.to_s.split(".")[0]
@@ -1365,6 +1369,7 @@ def create_iiif
         puts '{ "error": "Zadané uuid v digitální knihovně ' + @library + ' neexistuje" }'
     else puts '{ "error": " Pro model ' + @document_model + ' nelze vygenerovat IIIF Presentation API v3. Zkuste uuid nadřazeného objektu." }'
     end
+    #  puts Time.new
 end
 
 puts create_iiif
