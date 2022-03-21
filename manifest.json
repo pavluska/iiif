@@ -1,11 +1,10 @@
-https://kramerius.medvik.cz/search/api/v5.0/search?fl=fedora.model,root_title,details,title&q=PID:"uuid:MED00183496-282d279a-1b4a-4d99-989a-1904a464166b"&rows=1500&start=0
 {
   "@context": "https://iiif.io/api/presentation/3/context.json",
-  "id": "https://iiif.digitalniknihovna.cz/nlk/uuid:MED00183496-282d279a-1b4a-4d99-989a-1904a464166b",
+  "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51",
   "type": "Manifest",
   "label": {
     "cz": [
-      "Paul Ehrlich"
+      "Rytiny"
     ]
   },
   "metadata": [
@@ -17,7 +16,19 @@ https://kramerius.medvik.cz/search/api/v5.0/search?fl=fedora.model,root_title,de
       },
       "value": {
         "none": [
-          "Paul Ehrlich"
+          "Rytiny"
+        ]
+      }
+    },
+    {
+      "label": {
+        "cz": [
+          "Podnázev"
+        ]
+      },
+      "value": {
+        "none": [
+          "Radostný ostrov ; Dvě arabesky ; Obrazy"
         ]
       }
     },
@@ -29,7 +40,22 @@ https://kramerius.medvik.cz/search/api/v5.0/search?fl=fedora.model,root_title,de
       },
       "value": {
         "cz": [
-          "Grafika"
+          "Zvuková nahrávka"
+        ]
+      }
+    },
+    {
+      "label": {
+        "cz": [
+          "Autor"
+        ]
+      },
+      "value": {
+        "none": [
+          [
+            "Debussy, Claude, 1862-1918",
+            "Casadesus, Robert, 1899-1972"
+          ]
         ]
       }
     },
@@ -41,7 +67,7 @@ https://kramerius.medvik.cz/search/api/v5.0/search?fl=fedora.model,root_title,de
       },
       "value": {
         "none": [
-          "München :: Lehmann,, "
+          "Praha: Supraphon, 1969"
         ]
       }
     },
@@ -54,9 +80,7 @@ https://kramerius.medvik.cz/search/api/v5.0/search?fl=fedora.model,root_title,de
       "value": {
         "none": [
           [
-            "němčina",
-            "němčina",
-            "němčina"
+            "neurčený jazyk"
           ]
         ]
       }
@@ -64,20 +88,20 @@ https://kramerius.medvik.cz/search/api/v5.0/search?fl=fedora.model,root_title,de
   ],
   "provider": [
     {
-      "id": "https://registr.digitalniknihovna.cz/api/libraries/nlk",
+      "id": "https://registr.digitalniknihovna.cz/api/libraries/mzk",
       "type": "Agent",
       "label": {
         "cz": [
-          "Národní lékařská knihovna"
+          "Moravská zemská knihovna v Brně"
         ]
       },
       "homepage": [
         {
-          "id": "https://kramerius.medvik.cz",
+          "id": "https://kramerius.mzk.cz",
           "type": "Text",
           "label": {
             "cz": [
-              "Národní lékařská knihovna"
+              "Moravská zemská knihovna v Brně"
             ]
           },
           "format": "text/html"
@@ -85,7 +109,7 @@ https://kramerius.medvik.cz/search/api/v5.0/search?fl=fedora.model,root_title,de
       ],
       "logo": [
         {
-          "id": "https://registr.digitalniknihovna.cz/libraries/nlk/logo",
+          "id": "https://registr.digitalniknihovna.cz/libraries/mzk/logo",
           "type": "Image",
           "format": "image/png"
         }
@@ -94,102 +118,500 @@ https://kramerius.medvik.cz/search/api/v5.0/search?fl=fedora.model,root_title,de
   ],
   "homepage": [
     {
-      "id": "https://www.digitalniknihovna.cz/nlk/uuid/uuid:MED00183496-282d279a-1b4a-4d99-989a-1904a464166b",
+      "id": "https://www.digitalniknihovna.cz/mzk/uuid/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51",
       "type": "Text",
       "label": {
         "cz": [
           "Odkaz do Digitální knihovny"
         ]
       }
+    },
+    {
+      "id": "https://vufind.mzk.cz/Record/MZK01-000461651",
+      "type": "Text",
+      "label": {
+        "cz": [
+          "Odkaz do Vufindu"
+        ]
+      }
     }
   ],
   "thumbnail": [
     {
-      "id": "https://kramerius.medvik.cz/search/api/v5.0/item/uuid:MED00183496-282d279a-1b4a-4d99-989a-1904a464166b/thumb",
+      "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/thumb",
       "type": "Image",
       "format": "image/jpeg"
     }
   ],
   "items": [
     {
-      "id": "https://iiif.digitalniknihovna.cz/nlk/uuid:MED00183496-282d279a-1b4a-4d99-989a-1904a464166b/canvases/0",
+      "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/0",
       "type": "Canvas",
       "label": {
         "none": [
-          "[1a]"
+          "Obálka přední"
         ]
       },
+      "width": 1,
+      "height": 1,
       "thumbnail": [
         {
-          "id": "https://kramerius.medvik.cz/search/api/v5.0/item/uuid:24deb979-c581-451f-8512-b1a932649516/thumb",
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:0e23fffc-c7b7-4f99-943a-7c1744e2d0e9/thumb",
           "type": "Image"
         }
       ],
       "items": [
         {
-          "id": "https://iiif.digitalniknihovna.cz/nlk/uuid:MED00183496-282d279a-1b4a-4d99-989a-1904a464166b/canvases/0/ap",
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/0/ap",
           "type": "AnnotationPage",
           "items": [
             {
-              "id": "https://iiif.digitalniknihovna.cz/nlk/uuid:MED00183496-282d279a-1b4a-4d99-989a-1904a464166b/canvases/0/ap/a",
+              "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/0/ap/a",
               "type": "Annotation",
               "motivation": "painting",
               "body": {
-                "id": "https://kramerius.medvik.cz/search/iiif/uuid:24deb979-c581-451f-8512-b1a932649516/full/full/0/default.jpg",
+                "id": "https://kramerius.mzk.cz/search/iiif/uuid:0e23fffc-c7b7-4f99-943a-7c1744e2d0e9/full/full/0/default.jpg",
                 "type": "Image",
                 "format": "image/jpeg",
                 "service": [
                   {
-                    "@id": "https://kramerius.medvik.cz/search/iiif/uuid:24deb979-c581-451f-8512-b1a932649516",
+                    "@id": "https://kramerius.mzk.cz/search/iiif/uuid:0e23fffc-c7b7-4f99-943a-7c1744e2d0e9",
                     "@type": "ImageService2",
                     "profile": "http://iiif.io/api/image/2/level1.json"
                   }
                 ]
               },
-              "target": "https://iiif.digitalniknihovna.cz/nlk/uuid:MED00183496-282d279a-1b4a-4d99-989a-1904a464166b/canvases/0"
+              "target": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/0"
             }
           ]
         }
       ]
     },
     {
-      "id": "https://iiif.digitalniknihovna.cz/nlk/uuid:MED00183496-282d279a-1b4a-4d99-989a-1904a464166b/canvases/1",
+      "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/1",
       "type": "Canvas",
       "label": {
         "none": [
-          "[1b]"
+          "Obálka zadní"
         ]
       },
+      "width": 1,
+      "height": 1,
       "thumbnail": [
         {
-          "id": "https://kramerius.medvik.cz/search/api/v5.0/item/uuid:647094b0-f536-4fe6-9cdf-0d0ad83e65e8/thumb",
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:bc732f1e-bbf6-4ac3-a079-ef402f797295/thumb",
           "type": "Image"
         }
       ],
       "items": [
         {
-          "id": "https://iiif.digitalniknihovna.cz/nlk/uuid:MED00183496-282d279a-1b4a-4d99-989a-1904a464166b/canvases/1/ap",
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/1/ap",
           "type": "AnnotationPage",
           "items": [
             {
-              "id": "https://iiif.digitalniknihovna.cz/nlk/uuid:MED00183496-282d279a-1b4a-4d99-989a-1904a464166b/canvases/1/ap/a",
+              "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/1/ap/a",
               "type": "Annotation",
               "motivation": "painting",
               "body": {
-                "id": "https://kramerius.medvik.cz/search/iiif/uuid:647094b0-f536-4fe6-9cdf-0d0ad83e65e8/full/full/0/default.jpg",
+                "id": "https://kramerius.mzk.cz/search/iiif/uuid:bc732f1e-bbf6-4ac3-a079-ef402f797295/full/full/0/default.jpg",
                 "type": "Image",
                 "format": "image/jpeg",
                 "service": [
                   {
-                    "@id": "https://kramerius.medvik.cz/search/iiif/uuid:647094b0-f536-4fe6-9cdf-0d0ad83e65e8",
+                    "@id": "https://kramerius.mzk.cz/search/iiif/uuid:bc732f1e-bbf6-4ac3-a079-ef402f797295",
                     "@type": "ImageService2",
                     "profile": "http://iiif.io/api/image/2/level1.json"
                   }
                 ]
               },
-              "target": "https://iiif.digitalniknihovna.cz/nlk/uuid:MED00183496-282d279a-1b4a-4d99-989a-1904a464166b/canvases/1"
+              "target": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/1"
             }
           ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/2",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "Rytiny - Pagody"
+        ]
+      },
+      "duration": 1.0,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:57f954c6-ec52-4aa3-8b2b-bd3a378e06e3/thumb",
+          "type": "Image",
+          "format": "image/jpeg"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/2/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/2/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:95244c3c-94fd-44c7-a0d2-c950d35f6aea/streams/MP3",
+                "type": "Sound",
+                "duration": 1.0,
+                "format": "audio/mp3"
+              },
+              "target": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/3",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "Rytiny - Večer v Granadě"
+        ]
+      },
+      "duration": 1.0,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:57f954c6-ec52-4aa3-8b2b-bd3a378e06e3/thumb",
+          "type": "Image",
+          "format": "image/jpeg"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/3/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/3/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:2f6361e7-2df4-4c4c-b3cb-bf31c24a2ead/streams/MP3",
+                "type": "Sound",
+                "duration": 1.0,
+                "format": "audio/mp3"
+              },
+              "target": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/4",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "Rytiny - Zahrady v dešti"
+        ]
+      },
+      "duration": 1.0,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:57f954c6-ec52-4aa3-8b2b-bd3a378e06e3/thumb",
+          "type": "Image",
+          "format": "image/jpeg"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/4/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/4/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:ddd625d3-4ab8-4fd4-be96-48e6d32192da/streams/MP3",
+                "type": "Sound",
+                "duration": 1.0,
+                "format": "audio/mp3"
+              },
+              "target": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/5",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "Radostný ostrov"
+        ]
+      },
+      "duration": 1.0,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:57f954c6-ec52-4aa3-8b2b-bd3a378e06e3/thumb",
+          "type": "Image",
+          "format": "image/jpeg"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/5/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/5/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:13d2a96a-65b4-40f8-b0bb-bfa2515a93a4/streams/MP3",
+                "type": "Sound",
+                "duration": 1.0,
+                "format": "audio/mp3"
+              },
+              "target": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/6",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "Dvě arabesky - Andantino con moto"
+        ]
+      },
+      "duration": 1.0,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:db7497e5-4953-4f6c-8a5c-e5e1d0797546/thumb",
+          "type": "Image",
+          "format": "image/jpeg"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/6/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/6/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:b8f1233d-73ec-4e2f-99bb-b3faa06c8b91/streams/MP3",
+                "type": "Sound",
+                "duration": 1.0,
+                "format": "audio/mp3"
+              },
+              "target": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/7",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "Dvě arabesky - Allegretto scherzando"
+        ]
+      },
+      "duration": 1.0,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:db7497e5-4953-4f6c-8a5c-e5e1d0797546/thumb",
+          "type": "Image",
+          "format": "image/jpeg"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/7/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/7/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:ed8879b8-b3a9-4fab-8994-32ed8fe977e2/streams/MP3",
+                "type": "Sound",
+                "duration": 1.0,
+                "format": "audio/mp3"
+              },
+              "target": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/8",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "Obrazy, 2. kniha - Zvony pronikající listovím"
+        ]
+      },
+      "duration": 1.0,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:db7497e5-4953-4f6c-8a5c-e5e1d0797546/thumb",
+          "type": "Image",
+          "format": "image/jpeg"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/8/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/8/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:27d2fdf1-adcc-4a3d-8578-5cf86513256b/streams/MP3",
+                "type": "Sound",
+                "duration": 1.0,
+                "format": "audio/mp3"
+              },
+              "target": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/9",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "Obrazy, 2. kniha - A luna sestupuje na bývalý chrám"
+        ]
+      },
+      "duration": 1.0,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:db7497e5-4953-4f6c-8a5c-e5e1d0797546/thumb",
+          "type": "Image",
+          "format": "image/jpeg"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/9/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/9/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:26300c4a-2c04-4ade-b14c-8c13db5f9675/streams/MP3",
+                "type": "Sound",
+                "duration": 1.0,
+                "format": "audio/mp3"
+              },
+              "target": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/9"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/10",
+      "type": "Canvas",
+      "label": {
+        "none": [
+          "Obrazy, 2. kniha - Zlaté rybky"
+        ]
+      },
+      "duration": 1.0,
+      "thumbnail": [
+        {
+          "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:db7497e5-4953-4f6c-8a5c-e5e1d0797546/thumb",
+          "type": "Image",
+          "format": "image/jpeg"
+        }
+      ],
+      "items": [
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/10/ap",
+          "type": "AnnotationPage",
+          "items": [
+            {
+              "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/10/ap/a",
+              "type": "Annotation",
+              "motivation": "painting",
+              "body": {
+                "id": "https://kramerius.mzk.cz/search/api/v5.0/item/uuid:5d5b310b-654b-48cb-9239-29f922eba586/streams/MP3",
+                "type": "Sound",
+                "duration": 1.0,
+                "format": "audio/mp3"
+              },
+              "target": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/10"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "structures": [
+    {
+      "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/range/0",
+      "type": "Range",
+      "label": "1. strana",
+      "items": [
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/2",
+          "type": "Canvas"
+        },
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/3",
+          "type": "Canvas"
+        },
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/4",
+          "type": "Canvas"
+        },
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/5",
+          "type": "Canvas"
+        }
+      ]
+    },
+    {
+      "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/range/1",
+      "type": "Range",
+      "label": "2. strana",
+      "items": [
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/6",
+          "type": "Canvas"
+        },
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/7",
+          "type": "Canvas"
+        },
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/8",
+          "type": "Canvas"
+        },
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/9",
+          "type": "Canvas"
+        },
+        {
+          "id": "https://iiif.digitalniknihovna.cz/mzk/uuid:3f1eabff-c7f0-4edf-9623-b424e65bab51/canvases/10",
+          "type": "Canvas"
         }
       ]
     }

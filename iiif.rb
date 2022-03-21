@@ -3,6 +3,7 @@ require 'open-uri'
 require 'nokogiri'
 require 'json'
 
+# @uuid = ARGV[0]
 if ARGV.length == 1
     @link = ARGV[0]
     @library = @link.split("/")[3]
@@ -580,8 +581,6 @@ def create_list_of_pages(uuid)
 
         # cislo strany # typ strany
 
-        # canvas_label = ""
-         # page_type = ""
         if @v == "k5"
             if !page["details"][0].split("##")[0].nil?
                 page_properties["page_number"] = page["details"][0].split("##")[0].strip.sub(" ", "")
@@ -609,7 +608,6 @@ def create_list_of_pages(uuid)
         @image_iiif = image_iiif_control && iiif_image_body_control
     end
 
-
     return pages
 end
 
@@ -631,8 +629,6 @@ def create_items_pages(uuid)
         body_service = {"@id" => "#{@kramerius}/search/iiif/#{page["pid"]}",
                         "@type" => "ImageService2",
                         "profile" => "http://iiif.io/api/image/2/level1.json",
-                        # "width" => "",
-                        # "height" => ""
                         }
         # TODO thumb_service = {}
         canvas_thumbnail = {"id" => page["thumb_id"], 
@@ -666,6 +662,8 @@ def create_items_pages(uuid)
             canvas = {"id" => page["canvas_id"], 
                       "type" => "Canvas", 
                       "label" => { "none" => [page["page_number"]]}, 
+                      "width" => 1, 
+                      "height" => 1, 
                       "thumbnail" => [canvas_thumbnail], 
                       "seeAlso" => [seeAlso], 
                       "items" => itemsAnnotationPage
@@ -674,6 +672,8 @@ def create_items_pages(uuid)
             canvas = {"id" => page["canvas_id"], 
                 "type" => "Canvas", 
                 "label" => { "none" => [page["page_number"]]}, 
+                "width" => 1, 
+                "height" => 1, 
                 "thumbnail" => [canvas_thumbnail],  
                 "items" => itemsAnnotationPage
             }
@@ -722,6 +722,7 @@ def part_of
             partOf.push(item)
         end
     end
+
     return partOf
 end
 
@@ -1064,10 +1065,12 @@ def create_list_of_mp3(uuid)
         # PROVERIT
         if !track["track.length"].nil?
             track_properties["duration"] = track["track.length"].to_f
+        else
+            track_properties["duration"] = 1.to_f
         end
-        track_properties["thumb_id"] = "#{@kramerius}#{@solr_url}#{uuid}#{@thumb}"
+        track_properties["thumb_id"] = "#{@kramerius}#{@items}#{uuid}/thumb"
         #K7 https://k7-test.mzk.cz/search/api/client/v7.0/items/uuid:a31525ae-4033-4242-9293-d38c1ef06c61/audio/mp3
-        track_properties["body_id"] = "#{@kramerius}#{@solr_url}#{track["#{@pid}"]}#{@mp3_url}"
+        track_properties["body_id"] = "#{@kramerius}#{@items}#{track["#{@pid}"]}#{@mp3_url}"
         track_properties["canvas_id"] = "#{@url_manifest}/#{@library}/#{@uuid}/canvases/#{index}"
         track_properties["annotationPage_id"] = "#{@url_manifest}/#{@library}/#{@uuid}/canvases/#{index}/ap"
         track_properties["annotation_id"] = "#{@url_manifest}/#{@library}/#{@uuid}/canvases/#{index}/ap/a"
@@ -1086,20 +1089,13 @@ def create_items_tracks(uuid)
                             "type" => "Image",
                             "format" => "image/jpeg"
                             }
-        if !track["duration"].nil?
-            body = {"id" => track["body_id"], 
-                "type" => "Sound", 
-                "duration" => track["duration"],
-                "format" => "audio/mp3", 
-                #TODO "service" => [body_service]
+        body = {"id" => track["body_id"], 
+            "type" => "Sound", 
+            #TODO "duration" => track["duration"],
+            "duration" => track["duration"],
+            "format" => "audio/mp3", 
+            #TODO "service" => [body_service]
             }
-        else
-            body = {"id" => track["body_id"], 
-                "type" => "Sound", 
-                "format" => "audio/mp3", 
-                #TODO "service" => [body_service]
-            }
-        end
         annotation = {"id" => track["annotation_id"], 
             "type" => "Annotation", 
             "motivation" => "painting", 
