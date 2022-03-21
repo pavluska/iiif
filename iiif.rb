@@ -133,7 +133,6 @@ def find_document_properties(pid)
     @mp3_url = @mapping["#{@v}"]["mp3_url"]
 
     solr_request = "#{@kramerius}#{@solr_url}fl=#{@fedora_model},#{@root_title_url},#{@details},#{@title_url}&q=#{@pid}:#{uuid}&rows=1500&start=0"
-    puts solr_request
     object = get_json(solr_request)
     response_body = object["response"]["docs"][0]
     if !response_body.nil?
