@@ -1068,7 +1068,7 @@ def create_list_of_mp3(uuid)
         else
             track_properties["duration"] = 1.to_f
         end
-        track_properties["thumb_id"] = "#{@kramerius}#{@items}#{uuid}/thumb"
+        track_properties["thumb_id"] = "#{@kramerius}#{@items}#{uuid}#{@thumb_url}"
         #K7 https://k7-test.mzk.cz/search/api/client/v7.0/items/uuid:a31525ae-4033-4242-9293-d38c1ef06c61/audio/mp3
         track_properties["body_id"] = "#{@kramerius}#{@items}#{track["#{@pid}"]}#{@mp3_url}"
         track_properties["canvas_id"] = "#{@url_manifest}/#{@library}/#{@uuid}/canvases/#{index}"
