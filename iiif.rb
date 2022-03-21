@@ -2,10 +2,7 @@ require 'net/https'
 require 'open-uri'
 require 'nokogiri'
 require 'json'
-require 'typhoeus'
-require 'fastimage'
 
-# @uuid = ARGV[0]
 if ARGV.length == 1
     @link = ARGV[0]
     @library = @link.split("/")[3]
@@ -136,6 +133,7 @@ def find_document_properties(pid)
     @mp3_url = @mapping["#{@v}"]["mp3_url"]
 
     solr_request = "#{@kramerius}#{@solr_url}fl=#{@fedora_model},#{@root_title_url},#{@details},#{@title_url}&q=#{@pid}:#{uuid}&rows=1500&start=0"
+    puts solr_request
     object = get_json(solr_request)
     response_body = object["response"]["docs"][0]
     if !response_body.nil?
@@ -415,8 +413,6 @@ def create_metadata
     return metadata
 end
 
-
-
 def create_homepage
     uuid = @uuid
     sysno = @mods["sysno"]
@@ -614,58 +610,7 @@ def create_list_of_pages(uuid)
         @image_iiif = image_iiif_control && iiif_image_body_control
     end
 
-    # typhoeus test
-    if @image_iiif
-        # puts 'before hydra', Time.new
-        hydra = Typhoeus::Hydra.new(max_concurrency: 10)
-        requests = pids.map{ |pid|
-            request = Typhoeus::Request.new( 
-                "#{@kramerius}/search/iiif/#{pid}/info.json",
-                method: :get,
-                headers: {
-                    "Content-Type" => "application/json"
-                },
-                followlocation: true
-            )
-            hydra.queue(request)
-            request
-        }
-        # puts 'before hydra run', Time.new
-        hydra.run
-        # puts 'after hydra run', Time.new
-        responses = requests.map { |request|
-            JSON(request.response.body) if request.response.code === 200
-        }
-        pages.each do |page|
-            pid2 = "#{@kramerius}/search/iiif/#{page["pid"]}"
-            if !responses.nil?
-                responses.each do |item|
-                    if !item.nil?
-                        if pid2 === item["@id"]
-                            page["max_width"] = item["width"]
-                            page["max_height"] = item["height"]
-                            page["thumb_width"] = item["sizes"][0]["width"]
-                            page["thumb_height"] = item["sizes"][0]["height"]
-                            page["width"] = item["sizes"][item["sizes"].length - 1]["width"]
-                            page["height"] = item["sizes"][item["sizes"].length - 1]["height"]
-                        end
-                    end
-                end
-            end
-        end
-    else
-        pages.each do |page| 
-            if !page["body_id_imgfull"].nil?
-                size = FastImage.size(page["body_id_imgfull"])
-                if !size.nil?
-                    page["width"] = size[0]
-                    page["height"] = size[1]
-                    page["thumb_width"] = size[0].to_i/10
-                    page["thumb_height"] = size[1].to_i/10
-                end
-            end
-        end
-    end
+
     return pages
 end
 
@@ -693,24 +638,18 @@ def create_items_pages(uuid)
         # TODO thumb_service = {}
         canvas_thumbnail = {"id" => page["thumb_id"], 
                             "type" => "Image", 
-                            "width" => page["thumb_width"], 
-                            "height" => page["thumb_height"], 
                             # TODO "service" => [thumb_service]
                             }
         if @image_iiif
             # PROVERIT
             body = {"id" => page["body_id_iiif"], 
                 "type" => "Image", 
-                "width" => page["width"], 
-                "height" => page["height"], 
                 "format" => "image/jpeg", 
                 "service" => [body_service]
                 }
         else 
             body = {"id" => page["body_id_imgfull"], 
                 "type" => "Image", 
-                "width" => page["width"], 
-                "height" => page["height"], 
                 "format" => "image/jpeg", 
                 }
         end
@@ -728,8 +667,6 @@ def create_items_pages(uuid)
             canvas = {"id" => page["canvas_id"], 
                       "type" => "Canvas", 
                       "label" => { "none" => [page["page_number"]]}, 
-                      "width" => page["width"], 
-                      "height" => page["height"], 
                       "thumbnail" => [canvas_thumbnail], 
                       "seeAlso" => [seeAlso], 
                       "items" => itemsAnnotationPage
@@ -738,8 +675,6 @@ def create_items_pages(uuid)
             canvas = {"id" => page["canvas_id"], 
                 "type" => "Canvas", 
                 "label" => { "none" => [page["page_number"]]}, 
-                "width" => page["width"], 
-                "height" => page["height"], 
                 "thumbnail" => [canvas_thumbnail],  
                 "items" => itemsAnnotationPage
             }
@@ -788,21 +723,6 @@ def part_of
             partOf.push(item)
         end
     end
-            # VYPRDNOUT SE NA KOLEKCE VE VERZI 5
-            # a["collection"].each do |vc|
-            #     item = {}
-            #     item["id"] = "#{@url_manifest}/#{vc}"
-            #     item["type"] = "Collection"
-            #     # ZISKAT NAZEV KOLEKCE - HROZNE TO TRVA
-            #     # object = get_json("https://kramerius.mzk.cz/search/api/v5.0/vc")
-            #     # object.each do |collection|
-            #     #     if collection["pid"] == vc
-            #     #         item["label"] = collection["descs"]["cs"]
-            #     #     end
-            #     # end
-            #     partOf.push(item)
-            # end
-
     return partOf
 end
 
@@ -1145,8 +1065,6 @@ def create_list_of_mp3(uuid)
         # PROVERIT
         if !track["track.length"].nil?
             track_properties["duration"] = track["track.length"].to_f
-        else
-            track_properties["duration"] = 1.to_f
         end
         track_properties["thumb_id"] = "#{@kramerius}#{@solr_url}#{uuid}#{@thumb}"
         #K7 https://k7-test.mzk.cz/search/api/client/v7.0/items/uuid:a31525ae-4033-4242-9293-d38c1ef06c61/audio/mp3
@@ -1169,13 +1087,20 @@ def create_items_tracks(uuid)
                             "type" => "Image",
                             "format" => "image/jpeg"
                             }
-        body = {"id" => track["body_id"], 
-            "type" => "Sound", 
-            #TODO "duration" => track["duration"],
-            "duration" => track["duration"],
-            "format" => "audio/mp3", 
-            #TODO "service" => [body_service]
+        if !track["duration"].nil?
+            body = {"id" => track["body_id"], 
+                "type" => "Sound", 
+                "duration" => track["duration"],
+                "format" => "audio/mp3", 
+                #TODO "service" => [body_service]
             }
+        else
+            body = {"id" => track["body_id"], 
+                "type" => "Sound", 
+                "format" => "audio/mp3", 
+                #TODO "service" => [body_service]
+            }
+        end
         annotation = {"id" => track["annotation_id"], 
             "type" => "Annotation", 
             "motivation" => "painting", 
