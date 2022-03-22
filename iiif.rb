@@ -2,6 +2,8 @@ require 'net/https'
 require 'open-uri'
 require 'nokogiri'
 require 'json'
+require 'typhoeus'
+require 'fastimage'
 
 # @uuid = ARGV[0]
 if ARGV.length == 1
@@ -12,6 +14,12 @@ if ARGV.length == 1
 else 
     @library = ARGV[0]
     @uuid = ARGV[1]
+    full = ARGV[2]
+    if (full == 'full')
+        @full = true
+    else
+        @full = false
+    end
 end
 @registrkrameriu = "https://registr.digitalniknihovna.cz/api/libraries"
 @url_manifest = "https://iiif.digitalniknihovna.cz"
@@ -20,8 +28,9 @@ end
 
 @languages = {"cze" => "čeština", "ger" => "němčina", "eng" => "angličtina", "lat" => "latina", "fre" => "francouzština",
               "rus" => "ruština", "pol" => "polština", "slv" => "slovinština", "slo" => "slovenština", 
-              "ita" => "italština", "dut" => "nizozemština",
-              "und" => "neurčený jazyk", "zxx" => "žádný lingvistický obsah"}
+              "ita" => "italština", "dut" => "nizozemština", "hun" => "maďarština", "ukr" => "ukrajinština",
+              "rum" => "rumunština", "sla" => "slovanské jazyky", "grc" => "starořečtina", "spa" => "španělština", "scr" => "chorvatština", 
+              "und" => "neurčený jazyk", "zxx" => "žádný lingvistický obsah", "---" => "žádný lingvistický obsah", }
 
 @mapping = {
     "k5" => {
@@ -38,7 +47,8 @@ end
         "rels_ext_index" => "rels_ext_index",
         "alto_url" => "/streams/ALTO",
         "root_pid" => "root_pid",
-        "mp3_url" => "/streams/MP3"
+        "mp3_url" => "/streams/MP3",
+        "pdf" => "img_full_mime"
     },
     "k7" => {
         "solr" => "/search/api/client/v7.0/search?",
@@ -54,7 +64,8 @@ end
         "details" => "date.str,part.number.str,part.name,issue.type.code,page.number,page.type",
         "alto_url" => "/ocr/alto",
         "root_pid" => "root.pid",
-        "mp3_url" => "/audio/mp3"
+        "mp3_url" => "/audio/mp3",
+        "pdf" => "ds.img_full.mime"
     }
 }
 
@@ -132,14 +143,16 @@ def find_document_properties(pid)
     @mods_url = @mapping["#{@v}"]["mods_url"]
     @thumb_url = @mapping["#{@v}"]["thumb"]
     @mp3_url = @mapping["#{@v}"]["mp3_url"]
+    @pdf = @mapping["#{@v}"]["pdf"]
 
-    solr_request = "#{@kramerius}#{@solr_url}fl=#{@fedora_model},#{@root_title_url},#{@details},#{@title_url}&q=#{@pid}:#{uuid}&rows=1500&start=0"
+    solr_request = "#{@kramerius}#{@solr_url}fl=#{@fedora_model},#{@root_title_url},#{@details},#{@title_url},#{@pdf}&q=#{@pid}:#{uuid}&rows=1500&start=0"
     object = get_json(solr_request)
     response_body = object["response"]["docs"][0]
     if !response_body.nil?
         document["model"] = response_body["#{@fedora_model}"]
         document["root_title"] = response_body["#{@root_title_url}"].split(":")[0]
         document["title"] = response_body["#{@title_url}"]
+        document["pdf"] = response_body["#{@pdf}"]
         if @v == "k5"
             if document["model"].to_s == "periodicalvolume"
                 if !response_body["details"][0].split("##")[0].nil?
@@ -162,6 +175,9 @@ def find_document_properties(pid)
                     document["model"] = 'monographcollection'
                 end
             end
+            if document["pdf"] == "application/pdf"
+                document["model"] = 'pdf'
+            end
         elsif @v == "k7"
             if document["model"].to_s == "periodicalvolume" || document["model"].to_s == "periodicalitem"
                 if !response_body["date.str"].nil?
@@ -180,6 +196,9 @@ def find_document_properties(pid)
                     document["model"] = 'monographcollection'
                 end
             end
+            if document["pdf"] == "application/pdf"
+                document["model"] = 'pdf'
+            end       
         end
     end
     return document
@@ -584,16 +603,20 @@ def create_list_of_pages(uuid)
         if @v == "k5"
             if !page["details"][0].split("##")[0].nil?
                 page_properties["page_number"] = page["details"][0].split("##")[0].strip.sub(" ", "")
+                page_properties["label"] = page_properties["page_number"]
             end
             if !page["details"][0].split("##")[1].nil?
                 page_properties["page_type"] = page["details"][0].split("##")[1].strip.sub(" ", "")
+                page_properties["label"] = page_properties["label"] + ' (' + page_properties["page_type"] + ')'
             end
         elsif @v == "k7"
             if !page["page.number"].nil?
                 page_properties["page_number"] = page["page.number"]
+                page_properties["label"] = page_properties["page_number"]
             end
             if !page["page.type"].nil?
                 page_properties["page_type"] = page["page.type"]
+                page_properties["label"] = page_properties["label"] + ' (' + page_properties["page_type"] + ')'
             end
         end
         
@@ -606,6 +629,66 @@ def create_list_of_pages(uuid)
         image_iiif_control = control_404("#{@kramerius}/search/iiif/#{pages[0]['pid']}/info.json") 
         iiif_image_body_control = !(get_xml("#{@kramerius}/search/iiif/#{pages[0]['pid']}/info.json") == '')
         @image_iiif = image_iiif_control && iiif_image_body_control
+    end
+
+    # typhoeus test
+    if @full
+        if @image_iiif
+            hydra = Typhoeus::Hydra.new(max_concurrency: 10)
+            requests = pids.map{ |pid|
+                request = Typhoeus::Request.new( 
+                    "#{@kramerius}/search/iiif/#{pid}/info.json",
+                    method: :get,
+                    headers: {
+                        "Content-Type" => "application/json"
+                    },
+                    followlocation: true
+                )
+                hydra.queue(request)
+                request
+            }
+            # puts 'before hydra run', Time.new
+            hydra.run
+            # puts 'after hydra run', Time.new
+            responses = requests.map { |request|
+                JSON(request.response.body) if request.response.code === 200
+            }
+            # puts responses
+            pages.each do |page|
+                pid2 = "#{@kramerius}/search/iiif/#{page["pid"]}"
+                if !responses.nil?
+                    responses.each do |item|
+                        if !item.nil?
+                            if pid2 === item["@id"]
+                                page["width"] = item["width"]
+                                page["height"] = item["height"]
+                                # page["thumb_width"] = item["sizes"][0]["width"]
+                                # page["thumb_height"] = item["sizes"][0]["height"]
+                                # page["width"] = item["sizes"][item["sizes"].length - 1]["width"]
+                                # page["height"] = item["sizes"][item["sizes"].length - 1]["height"]
+                            end
+                        end
+                    end
+                end
+            end
+        else
+            pages.each do |page| 
+                if !page["body_id_imgfull"].nil?
+                    size = FastImage.size(page["body_id_imgfull"])
+                    if !size.nil?
+                        page["width"] = size[0]
+                        page["height"] = size[1]
+                        # page["thumb_width"] = size[0].to_i/10
+                        # page["thumb_height"] = size[1].to_i/10
+                    end
+                end
+            end
+        end
+    else
+        pages.each do |page|
+            page["width"] = 1
+            page["height"] = 1
+        end
     end
 
     return pages
@@ -639,7 +722,9 @@ def create_items_pages(uuid)
             # PROVERIT
             body = {"id" => page["body_id_iiif"], 
                 "type" => "Image", 
-                "format" => "image/jpeg", 
+                "format" => "image/jpeg",
+                "width" => page["width"],
+                "height" => page["height"],
                 "service" => [body_service]
                 }
         else 
@@ -661,9 +746,9 @@ def create_items_pages(uuid)
         if alto
             canvas = {"id" => page["canvas_id"], 
                       "type" => "Canvas", 
-                      "label" => { "none" => [page["page_number"]]}, 
-                      "width" => 1, 
-                      "height" => 1, 
+                      "label" => { "none" => [page["label"]]}, 
+                      "width" => page["width"],
+                      "height" => page["height"],
                       "thumbnail" => [canvas_thumbnail], 
                       "seeAlso" => [seeAlso], 
                       "items" => itemsAnnotationPage
@@ -671,9 +756,9 @@ def create_items_pages(uuid)
         else
             canvas = {"id" => page["canvas_id"], 
                 "type" => "Canvas", 
-                "label" => { "none" => [page["page_number"]]}, 
-                "width" => 1, 
-                "height" => 1, 
+                "label" => { "none" => [page["label"]]}, 
+                "width" => page["width"],
+                "height" => page["height"],
                 "thumbnail" => [canvas_thumbnail],  
                 "items" => itemsAnnotationPage
             }
@@ -1158,7 +1243,7 @@ def create_list_of_konvolut_parts
     konvolutparts = []
 
     sorted_object.each do |part|
-        if !(part["#{@fedora_model}"] == "oldprintomnibusvolume")
+        if !(part["#{@fedora_model}"] == "convolute")
             part_properties = {}
             part_properties["index"] = part["#{@rels_ext_index}"][0]
             part_properties["pid"] = part["#{@pid}"]
@@ -1226,9 +1311,37 @@ def create_list_of_collection_parts
     end
     return collectionparts
 end
+# ---------- CREATE IIIF PDF ---------------
+
+def create_iiif_pdf
+    iiif = {"@context" => "https://iiif.io/api/presentation/3/context.json",
+        "id" => "#{@url_manifest}/#{@library}/#{@uuid}", 
+        "type" => "Manifest", 
+        "label" => create_label(@uuid), 
+        "metadata" => create_metadata, 
+        "provider" => create_provider(@library)[0], 
+        "homepage" => create_homepage,
+        "thumbnail" => create_thumbnail(@uuid),
+        "rendering" => create_rendering(@uuid),
+        # "items" => create_items_pages(@uuid)
+    }
+    return JSON.pretty_generate(iiif)
+end
+
+def create_rendering(uuid)
+    rendering = []
+    # https://kramerius.mzk.cz/search/api/v5.0/item/uuid:27055693-9413-43d3-8e61-d5048b14dd16/streams/IMG_FULL
+    pdf_properties = {
+        "id" => "#{@kramerius}#{@items}#{@uuid}/streams/IMG_FULL",
+        "type" => "Text",
+        "label" => { "en": [ "PDF" ] },
+        "format" => "application/pdf"
+    }
+    rendering.push(pdf_properties)
+end
+
 # ---------- CREATE IIIF MANIFEST ----------- 
 def create_iiif
-    # puts Time.new
     @kramerius = create_provider(@library)[1]
     version = create_provider(@library)[2]
     @v = "k" + version.to_s.split(".")[0]
@@ -1276,7 +1389,7 @@ def create_iiif
     elsif @document_model == "periodicalitem"
         @type_of_resource = "Číslo periodika"
         puts create_iiif_periodicalissue
-    elsif @document_model == "oldprintomnibusvolume"
+    elsif @document_model == "convolute"
         @type_of_resource = "Konvolut"
         puts create_iiif_konvolut
     elsif @document_model == "oldprintsheetmusic"
@@ -1285,11 +1398,13 @@ def create_iiif
     elsif @document_model == "collection"
         @type_of_resource = "Sbírka"
         puts create_iiif_collection
+    elsif @document_model == "pdf"
+        @type_of_resource = "PDF"
+        puts create_iiif_pdf
     elsif @document_model.nil?
         puts '{ "error": "Zadané uuid v digitální knihovně ' + @library + ' neexistuje" }'
     else puts '{ "error": " Pro model ' + @document_model + ' nelze vygenerovat IIIF Presentation API v3. Zkuste uuid nadřazeného objektu." }'
     end
-    #  puts Time.new
 end
 
 puts create_iiif

@@ -19,12 +19,14 @@ app.use(express.static('public'))
 
 const { spawn } = require('child_process');
 
-app.get("/:library/:uuid", (req, res, next) => {
+app.get("/:library/:uuid/:full?", (req, res, next) => {
 
     // const uuid = 'uuid:5ef70cb8-6398-4486-b5f7-94ba3150a052';
     const uuid = req.params.uuid;
     const library = req.params.library;
-    const ruby = spawn('ruby', ['iiif.rb', library, uuid]);
+    const full = req.params.full;
+    const ruby = spawn('ruby', ['iiif.rb', library, uuid, full]);
+    console.log(full)
 
     let result = ""
     ruby.stdout.on('data', (data) => {
