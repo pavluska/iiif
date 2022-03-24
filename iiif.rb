@@ -629,10 +629,12 @@ def create_list_of_pages(uuid)
         image_iiif_control = control_404("#{@kramerius}/search/iiif/#{pages[0]['pid']}/info.json") 
         iiif_image_body_control = !(get_xml("#{@kramerius}/search/iiif/#{pages[0]['pid']}/info.json") == '')
         @image_iiif = image_iiif_control && iiif_image_body_control
+        @first_page_width = get_json("#{@kramerius}/search/iiif/#{pages[0]['pid']}/info.json")["width"]
+        @first_page_height = get_json("#{@kramerius}/search/iiif/#{pages[0]['pid']}/info.json")["height"]
     end
 
     # typhoeus test
-    if @full
+    if (@full || pages.length < 50)
         if @image_iiif
             hydra = Typhoeus::Hydra.new(max_concurrency: 10)
             requests = pids.map{ |pid|
@@ -686,8 +688,13 @@ def create_list_of_pages(uuid)
         end
     else
         pages.each do |page|
-            page["width"] = 1
-            page["height"] = 1
+            # if @image_iiif
+            #     page["width"] = @first_page_width
+            #     page["height"] = @first_page_height
+            # else
+                page["width"] = 1000
+                page["height"] = 1000
+            # end
         end
     end
 

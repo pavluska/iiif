@@ -1,4 +1,10 @@
 # iiif
+
+Jak to funguje:
+- pro dokumenty s méně než 50 stranami generuje reálné velikosti obrázků, pro větší dokumenty generuje 1000x1000
+- přidáním /full na konec dotazu (ne ?link) se vygenerují reálné velikosti obrázků i pro dokumenty, které mají více než 50 stran
+- funguje pro knihovny z registr.digitalniknihovna.cz (pokud tam mají uvedený funkční Kramerius) + mzkk7 pro test API Krameria verze 7
+
 Formát url:
 
 https://api.pavlarychtarova.cz/kod_knihovny/uuid
@@ -51,3 +57,7 @@ https://iiif.pavlarychtarova.cz/mzk/uuid:5e0d749d-c560-4b8c-aae7-665cb952b655
 Zvukové nahrávky
 
 https://iiif.pavlarychtarova.cz/mzk/uuid:4067ca61-96f7-48b6-9fa3-8a127a4df5e6
+
+PDF - negeneruje items, jen metadatový popis a link na pdf
+
+https://iiif.pavlarychtarova.cz/mzk/uuid:27055693-9413-43d3-8e61-d5048b14dd16
